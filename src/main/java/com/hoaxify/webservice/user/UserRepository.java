@@ -1,2 +1,7 @@
-package com.hoaxify.webservice.user;public interface UserRepository {
+package com.hoaxify.webservice.user;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
 }
