@@ -21,7 +21,7 @@ class UserSignupPage extends React.Component {
 
     onClickSignUp = event => {
         event.preventDefault();
-        const url = 'http://localhost:8080/api/1.0/users'
+        const url = '/api/1.0/users'
         const { userName, displayName, password } = this.state;
 
         const body = {
