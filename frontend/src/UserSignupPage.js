@@ -7,7 +7,8 @@ class UserSignupPage extends React.Component {
         userName: null,
         displayName: null,
         password: null,
-        passwordRepeat: null
+        passwordRepeat: null,
+        pendingApiCall: false
     };
 
     onChange = event => {
@@ -28,8 +29,17 @@ class UserSignupPage extends React.Component {
             userName,
             displayName,
             password
-        }
-        axios.post(url, body);
+        };
+
+        this.setState({ pendingApiCall: true });
+
+        axios.post(url, body)
+            .then(response => {
+                this.setState({ pendingApiCall: false });
+            })
+            .catch(error => {
+                this.setState({ pendingApiCall: false });
+            });
 
     };
 
@@ -58,7 +68,12 @@ class UserSignupPage extends React.Component {
                         <input className="form-control" name="passwordRepeat" type="password" onChange={this.onChange} />
                     </div>
                     <div className="text-center">
-                        <button className="btn btn-primary" onClick={this.onClickSignUp}>Sign Up</button>
+                        <button className="btn btn-primary"
+                            onClick={this.onClickSignUp}
+                            disabled={this.state.pendingApiCall}>
+                            {this.state.pendingApiCall &&
+                                <span className="spinner-border spinner-border-sm"></span>}
+                            Sign Up</button>
                     </div>
 
                 </form>
