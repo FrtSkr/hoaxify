@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios"; // for http requests
+import { signup } from '../api/apiCalls';
 
 class UserSignupPage extends React.Component {
 
@@ -20,9 +21,9 @@ class UserSignupPage extends React.Component {
     }
 
 
-    onClickSignUp = event => {
+    onClickSignUp = async event => {
         event.preventDefault();
-        const url = '/api/1.0/users'
+
         const { userName, displayName, password } = this.state;
 
         const body = {
@@ -32,18 +33,19 @@ class UserSignupPage extends React.Component {
         };
 
         this.setState({ pendingApiCall: true });
+        try {
+            const response = await signup(body);
 
-        axios.post(url, body)
-            .then(response => {
-                this.setState({ pendingApiCall: false });
-            })
-            .catch(error => {
-                this.setState({ pendingApiCall: false });
-            });
+        } catch (error) {
+
+        }
+        this.setState({ pendingApiCall: false })
+
 
     };
 
     render() {
+        const { pendingApiCall } = this.state;
         return (
             <div className="container">
                 <form>
@@ -70,8 +72,8 @@ class UserSignupPage extends React.Component {
                     <div className="text-center">
                         <button className="btn btn-primary"
                             onClick={this.onClickSignUp}
-                            disabled={this.state.pendingApiCall}>
-                            {this.state.pendingApiCall &&
+                            disabled={pendingApiCall}>
+                            {pendingApiCall &&
                                 <span className="spinner-border spinner-border-sm"></span>}
                             Sign Up</button>
                     </div>
