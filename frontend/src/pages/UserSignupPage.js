@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios"; // for http requests
 import { signup } from '../api/apiCalls';
 
 class UserSignupPage extends React.Component {
@@ -9,14 +8,18 @@ class UserSignupPage extends React.Component {
         displayName: null,
         password: null,
         passwordRepeat: null,
-        pendingApiCall: false
+        pendingApiCall: false,
+        errors: {}
     };
 
     onChange = event => {
         //object destructuring
         const { name, value } = event.target;
+        const errors = { ...this.state.errors }
+        errors[name] = undefined
         this.setState({
-            [name]: value
+            [name]: value,
+            errors
         });
     }
 
@@ -37,7 +40,11 @@ class UserSignupPage extends React.Component {
             const response = await signup(body);
 
         } catch (error) {
-
+            if (error.response.data.validationErrors) {
+                this.setState({
+                    errors: error.response.data.validationErrors
+                });
+            }
         }
         this.setState({ pendingApiCall: false })
 
@@ -45,14 +52,19 @@ class UserSignupPage extends React.Component {
     };
 
     render() {
-        const { pendingApiCall } = this.state;
+        const { pendingApiCall, errors } = this.state;
+        const { userName } = errors;
         return (
             <div className="container">
                 <form>
                     <h1 className="text-center">Sign Up</h1>
                     <div className="form-group">
                         <label>User Name: </label>
-                        <input className="form-control" name="userName" onChange={this.onChange} />
+                        <input className={userName ? "form-control is-invalid" : "form-control"} name="userName" onChange={this.onChange} />
+                        <div className="invalid-feedback">
+                            {userName}
+                        </div>
+
                     </div>
 
                     <div className="form-group">
