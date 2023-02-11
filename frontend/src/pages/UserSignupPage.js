@@ -1,5 +1,6 @@
 import React from "react";
 import { signup } from '../api/apiCalls';
+import Input from "../components/Input";
 
 class UserSignupPage extends React.Component {
 
@@ -58,30 +59,16 @@ class UserSignupPage extends React.Component {
             <div className="container">
                 <form>
                     <h1 className="text-center">Sign Up</h1>
-                    <div className="form-group">
-                        <label>User Name: </label>
-                        <input className={userName ? "form-control is-invalid" : "form-control"} name="userName" onChange={this.onChange} />
-                        <div className="invalid-feedback">
-                            {userName}
-                        </div>
-
-                    </div>
+                    <Input label="User Name" error={userName} inputName="userName" onChange={this.onChange} />
+                    <Input label="Display Name" error={displayName} inputName="displayName" onChange={this.onChange} />
 
                     <div className="form-group">
-                        <label>Display Name: </label>
-                        <input className={displayName ? "form-control is-invalid" : "form-control"} name="displayName" onChange={this.onChange} />
-                        <div className="invalid-feedback">
-                            {displayName}
-                        </div>
-                    </div>
-
-                    <div className="form-group">
-                        <label>Password: </label>
+                        <label>Password</label>
                         <input className="form-control" name="password" type="password" onChange={this.onChange} />
                     </div>
 
                     <div className="form-group">
-                        <label>Password Repeat: </label>
+                        <label>Password Repeat</label>
                         <input className="form-control" name="passwordRepeat" type="password" onChange={this.onChange} />
                     </div>
                     <div className="text-center">
