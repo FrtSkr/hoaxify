@@ -1,7 +1,7 @@
 import React from "react";
 import Input from "../components/Input";
 import { withTranslation } from "react-i18next";
-
+import { login } from "../api/apiCalls";
 class UserLoginPage extends React.Component {
 
     state = {
@@ -24,16 +24,22 @@ class UserLoginPage extends React.Component {
     }
 
 
-    onClickSignUp = async event => {
+    onClickLogin = async event => {
         event.preventDefault();
 
         const { userName, password } = this.state;
 
-        const body = {
+        const creds = {
             userName,
             password
         };
-        // TODO: HTTP Request
+        this.setState({ pendingApiCall: true });
+        try {
+            const response = await login(creds);
+        } catch (errors) {
+
+        }
+        this.setState({ pendingApiCall: false });
 
     };
 
@@ -51,7 +57,7 @@ class UserLoginPage extends React.Component {
 
                     <div className="text-center">
                         <button className="btn btn-primary"
-                            onClick={this.onClickSignUp}
+                            onClick={this.onClickLogin}
                             disabled={pendingApiCall}>
                             {pendingApiCall &&
                                 <span className="spinner-border spinner-border-sm"></span>}
