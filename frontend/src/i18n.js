@@ -24,7 +24,7 @@ i18n.use(initReactI18next).init({
             }
         }
     },
-    fallbackLng: 'tr', // hata durumunda hangi dil kullanılacak
+    fallbackLng: 'en', // hata durumunda hangi dil kullanılacak
     ns: ['translations'], // hangi havuzdan çeviriyi gerçekleştirecek (birden fazla olabilir)
     defaultNS: 'translations',
     keySeparator: false,

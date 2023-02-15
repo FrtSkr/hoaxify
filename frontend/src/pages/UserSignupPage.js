@@ -1,7 +1,8 @@
 import React from "react";
-import { signup } from '../api/apiCalls';
+import { signup, changeLanguage } from '../api/apiCalls';
 import Input from "../components/Input";
 import { withTranslation, WithTranslation } from 'react-i18next';
+import CountryFlagImg from "../components/CountryFlagImg";
 class UserSignupPage extends React.Component {
 
     state = {
@@ -64,6 +65,12 @@ class UserSignupPage extends React.Component {
 
     };
 
+    onChangeLanguage = language => {
+        const { i18n } = this.props;
+        i18n.changeLanguage(language);
+        changeLanguage(language);
+    }
+
     render() {
         const { pendingApiCall, errors } = this.state;
         const { userName, displayName, password, passwordRepeat } = errors;
@@ -84,8 +91,8 @@ class UserSignupPage extends React.Component {
                                 <span className="spinner-border spinner-border-sm"></span>}
                             {t('Sign Up')}</button>
                     </div>
-
                 </form>
+                <CountryFlagImg onChangeLanguage={this.onChangeLanguage} />
             </div>
         );
     }
