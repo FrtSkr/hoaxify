@@ -1,12 +1,16 @@
 import axios from "axios"; // for HTTP request
 
-export const signup = (body) => {
-    const url = '/api/1.0/users';
+const baseUrl = '/api/1.0/'
+export const signup = body => {
+    const url = baseUrl + 'users';
     return axios.post(url, body);
 };
 
+export const login = creds => {
+    const url = baseUrl + 'auth';
+    return axios.post(url, {}, { auth: creds });
+}
 
 export const changeLanguage = language => {
-    console.log(language);
     axios.defaults.headers['accept-language'] = language;
 };
