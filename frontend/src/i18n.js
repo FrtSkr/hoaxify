@@ -5,6 +5,7 @@ i18n.use(initReactI18next).init({
     resources: {
         en: {
             translations: {
+                'Login': 'Login',
                 'Sign Up': 'Sign Up',
                 'Password missmatch': 'Password missmatch',
                 'Username': 'Username',
@@ -15,6 +16,7 @@ i18n.use(initReactI18next).init({
         },
         tr: {
             translations: {
+                'Login': 'Giriş Yap',
                 'Sign Up': 'Kayıt Ol',
                 'Password missmatch': 'Şifre aynı değil',
                 'Username': 'Kullanıcı Adı',
