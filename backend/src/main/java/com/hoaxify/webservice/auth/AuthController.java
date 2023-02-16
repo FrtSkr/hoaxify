@@ -1,6 +1,8 @@
 package com.hoaxify.webservice.auth;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.hoaxify.webservice.error.ApiError;
+import com.hoaxify.webservice.shared.Views;
 import com.hoaxify.webservice.user.User;
 import com.hoaxify.webservice.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ public class AuthController {
 
 
     @PostMapping(basePath)
+    @JsonView(Views.Base.class)
     ResponseEntity<?> handleAuthentication(@RequestHeader(name = "Authorization", required = false) String authorization){
         if(authorization == null){
             ApiError apiError = new ApiError(401, "Unauthorization request", basePath);
@@ -32,6 +35,10 @@ public class AuthController {
 
         String base64Encoded = authorization.split("Basic ")[1];
         String decoded = new String(Base64.getDecoder().decode(base64Encoded));
+        if(decoded.trim().equalsIgnoreCase(":")){
+            ApiError apiError = new ApiError(401, "Unauthorization request", basePath);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiError);
+        }
         String[] parts = decoded.split(":");
         String username = parts[0];
         String password = parts[1];
@@ -46,7 +53,8 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiError);
         }
 
-        return ResponseEntity.ok().build();
+
+        return ResponseEntity.ok(inDB);
 
 
 
