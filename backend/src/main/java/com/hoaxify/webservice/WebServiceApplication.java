@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
-@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+@SpringBootApplication
 public class WebServiceApplication {
 
 	public static void main(String[] args) {
@@ -20,7 +20,7 @@ public class WebServiceApplication {
 	CommandLineRunner createInitialUsers(UserService userService){
 		return (args) -> {
 			User user = new User();
-			user.setUserName("admin");
+			user.setUsername("admin");
 			user.setDisplayName("admin");
 			user.setPassword("Admin123");
 			userService.save(user);

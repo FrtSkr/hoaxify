@@ -35,6 +35,7 @@ public class AuthController {
 
         String base64Encoded = authorization.split("Basic ")[1];
         String decoded = new String(Base64.getDecoder().decode(base64Encoded));
+
         if(decoded.trim().equalsIgnoreCase(":")){
             ApiError apiError = new ApiError(401, "Unauthorization request", basePath);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiError);
@@ -55,8 +56,6 @@ public class AuthController {
 
 
         return ResponseEntity.ok(inDB);
-
-
 
 
     }

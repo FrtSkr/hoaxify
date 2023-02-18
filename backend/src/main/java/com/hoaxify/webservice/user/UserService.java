@@ -11,8 +11,8 @@ public class UserService {
     UserRepository userRepository;
 
     PasswordEncoder passwordEncoder;
-    public UserService() {
-        this.passwordEncoder = new BCryptPasswordEncoder();
+    public UserService(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
 
