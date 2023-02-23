@@ -2,6 +2,10 @@ import React from "react";
 import Input from "../components/Input";
 import { withTranslation } from "react-i18next";
 import { login } from "../api/apiCalls";
+import axios from "axios";
+import ButtonWithProgress from '../components/ButtonWithProgress';
+
+
 class UserLoginPage extends React.Component {
 
     state = {
@@ -10,6 +14,27 @@ class UserLoginPage extends React.Component {
         error: null,
         pendingApiCall: false
 
+    };
+
+    componentDidMount() {
+        axios.interceptors.request.use(request => {
+            this.setState({
+                pendingApiCall: true
+            });
+            return request;
+        });
+
+        axios.interceptors.response.use(response => {
+            this.setState({
+                pendingApiCall: false
+            });
+            return response;
+        }, error => {
+            this.setState({
+                pendingApiCall: false
+            });
+            throw error;
+        });
     }
 
     onChange = event => {
@@ -31,7 +56,7 @@ class UserLoginPage extends React.Component {
             username,
             password
         };
-        this.setState({ pendingApiCall: true, error: null });
+        this.setState({ error: null });
         try {
             await login(creds);
         } catch (apiError) {
@@ -39,8 +64,6 @@ class UserLoginPage extends React.Component {
                 error: apiError.response.data.message
             });
         }
-        this.setState({ pendingApiCall: false });
-
     };
 
 
@@ -59,12 +82,14 @@ class UserLoginPage extends React.Component {
                         {error}
                     </div>}
                     <div className="text-center">
-                        <button className="btn btn-primary"
+                        <ButtonWithProgress
                             onClick={this.onClickLogin}
-                            disabled={pendingApiCall || !isBtnEnable}>
-                            {pendingApiCall &&
-                                <span className="spinner-border spinner-border-sm"></span>}
-                            {t('Login')}</button>
+                            disabled={pendingApiCall || !isBtnEnable}
+                            pendingApiCall={pendingApiCall}
+                            text={t('Login')}
+
+                        />
+
                     </div>
                 </form>
             </div>

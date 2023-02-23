@@ -2,16 +2,40 @@ import React from "react";
 import { signup, changeLanguage } from '../api/apiCalls';
 import Input from "../components/Input";
 import { withTranslation } from 'react-i18next';
+import ButtonWithProgress from "../components/ButtonWithProgress";
+import axios from "axios";
+
 class UserSignupPage extends React.Component {
 
     state = {
-        userName: null,
+        username: null,
         displayName: null,
         password: null,
         passwordRepeat: null,
         pendingApiCall: false,
         errors: {}
     };
+
+    componentDidMount() {
+        axios.interceptors.request.use(request => {
+            this.setState({
+                pendingApiCall: true
+            });
+            return request;
+        });
+
+        axios.interceptors.response.use(response => {
+            this.setState({
+                pendingApiCall: false
+            });
+            return response;
+        }, error => {
+            this.setState({
+                pendingApiCall: false
+            });
+            throw error;
+        });
+    }
 
     onChange = event => {
         //object destructuring
@@ -40,15 +64,14 @@ class UserSignupPage extends React.Component {
     onClickSignUp = async event => {
         event.preventDefault();
 
-        const { userName, displayName, password } = this.state;
+        const { username, displayName, password } = this.state;
 
         const body = {
-            userName,
+            username,
             displayName,
             password
         };
 
-        this.setState({ pendingApiCall: true });
         try {
             const response = await signup(body);
 
@@ -59,30 +82,29 @@ class UserSignupPage extends React.Component {
                 });
             }
         }
-        this.setState({ pendingApiCall: false })
 
 
     };
 
     render() {
         const { pendingApiCall, errors } = this.state;
-        const { userName, displayName, password, passwordRepeat } = errors;
+        const { username, displayName, password, passwordRepeat } = errors;
         const { t } = this.props;
         return (
             <div className="container">
                 <form>
                     <h1 className="text-center">{t('Sign Up')}</h1>
-                    <Input label={t("Username")} error={userName} inputName="userName" onChange={this.onChange} />
+                    <Input label={t("Username")} error={username} inputName="username" onChange={this.onChange} />
                     <Input label={t("Display Name")} error={displayName} inputName="displayName" onChange={this.onChange} />
                     <Input label={t("Password")} error={password} inputName="password" onChange={this.onChange} inputType="password" />
                     <Input label={t("Password Repeat")} error={passwordRepeat} inputName="passwordRepeat" onChange={this.onChange} inputType="password" />
+                    <br />
                     <div className="text-center">
-                        <button className="btn btn-primary"
+                        <ButtonWithProgress
                             onClick={this.onClickSignUp}
-                            disabled={pendingApiCall || passwordRepeat != undefined}>
-                            {pendingApiCall &&
-                                <span className="spinner-border spinner-border-sm"></span>}
-                            {t('Sign Up')}</button>
+                            disabled={pendingApiCall || passwordRepeat != undefined}
+                            text={t('Sign Up')}
+                            pendingApiCall={pendingApiCall} />
                     </div>
                 </form>
             </div>
