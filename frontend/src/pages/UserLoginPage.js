@@ -5,20 +5,18 @@ import { login } from "../api/apiCalls";
 class UserLoginPage extends React.Component {
 
     state = {
-        userName: null,
+        username: null,
         password: null,
-        errors: {},
+        error: null,
         pendingApiCall: false
 
     }
 
     onChange = event => {
         const { name, value } = event.target;
-        const errors = { ...this.state.errors };
-        errors[name] = undefined;
         this.setState({
             [name]: value,
-            errors
+            error: null
         });
 
     }
@@ -27,17 +25,19 @@ class UserLoginPage extends React.Component {
     onClickLogin = async event => {
         event.preventDefault();
 
-        const { userName, password } = this.state;
+        const { username, password } = this.state;
 
         const creds = {
-            userName,
+            username,
             password
         };
-        this.setState({ pendingApiCall: true });
+        this.setState({ pendingApiCall: true, error: null });
         try {
-            const response = await login(creds);
-        } catch (errors) {
-
+            await login(creds);
+        } catch (apiError) {
+            this.setState({
+                error: apiError.response.data.message
+            });
         }
         this.setState({ pendingApiCall: false });
 
@@ -45,20 +45,23 @@ class UserLoginPage extends React.Component {
 
 
     render() {
-        const { userName, password } = this.state.errors;
-        const { pendingApiCall } = this.state;
+        const { pendingApiCall, username, password, error } = this.state;
         const { t } = this.props;
+        const isBtnEnable = username && password;
         return (
             <div className="container">
                 <form>
                     <h1 className="text-center">{t('Login')}</h1>
-                    <Input label={t("Username")} error={userName} inputName="userName" onChange={this.onChange} />
-                    <Input label={t("Password")} error={password} inputName="password" onChange={this.onChange} inputType="password" />
-
+                    <Input label={t("Username")} inputName="username" onChange={this.onChange} />
+                    <Input label={t("Password")} inputName="password" onChange={this.onChange} inputType="password" />
+                    <br />
+                    {error && <div className="alert alert-danger">
+                        {error}
+                    </div>}
                     <div className="text-center">
                         <button className="btn btn-primary"
                             onClick={this.onClickLogin}
-                            disabled={pendingApiCall}>
+                            disabled={pendingApiCall || !isBtnEnable}>
                             {pendingApiCall &&
                                 <span className="spinner-border spinner-border-sm"></span>}
                             {t('Login')}</button>
