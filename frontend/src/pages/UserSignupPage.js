@@ -12,30 +12,8 @@ class UserSignupPage extends React.Component {
         displayName: null,
         password: null,
         passwordRepeat: null,
-        pendingApiCall: false,
         errors: {}
     };
-
-    componentDidMount() {
-        axios.interceptors.request.use(request => {
-            this.setState({
-                pendingApiCall: true
-            });
-            return request;
-        });
-
-        axios.interceptors.response.use(response => {
-            this.setState({
-                pendingApiCall: false
-            });
-            return response;
-        }, error => {
-            this.setState({
-                pendingApiCall: false
-            });
-            throw error;
-        });
-    }
 
     onChange = event => {
         //object destructuring
@@ -87,9 +65,9 @@ class UserSignupPage extends React.Component {
     };
 
     render() {
-        const { pendingApiCall, errors } = this.state;
+        const { errors } = this.state;
         const { username, displayName, password, passwordRepeat } = errors;
-        const { t } = this.props;
+        const { t, pendingApiCall } = this.props;
         return (
             <div className="container">
                 <form>
