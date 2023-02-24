@@ -4,6 +4,7 @@ import Input from "../components/Input";
 import { withTranslation } from 'react-i18next';
 import ButtonWithProgress from "../components/ButtonWithProgress";
 import axios from "axios";
+import { withApiProgress } from "../shared/ApiProgress";
 
 class UserSignupPage extends React.Component {
 
@@ -91,5 +92,5 @@ class UserSignupPage extends React.Component {
 }
 
 const UserSignupPageWithTranslation = withTranslation()(UserSignupPage);
-
-export default UserSignupPageWithTranslation;
+const UserSignupPageWithApiProgress = withApiProgress(UserSignupPageWithTranslation, "/api/1.0/users");
+export default UserSignupPageWithApiProgress;
