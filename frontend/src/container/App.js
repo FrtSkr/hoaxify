@@ -1,17 +1,18 @@
 import React from "react";
-import ApiProgress from "../shared/ApiProgress";
 import UserLoginPage from "../pages/UserLoginPage";
 import UserSignupPage from '../pages/UserSignupPage';
 import LanguageSelector from "../components/LanguageSelector";
 import HomePages from "../pages/HomePages";
 import UserPage from "../pages/UserPage";
-import { HashRouter, Route, Redirect, Switch } from 'react-router-dom';
+import { HashRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
+import TopBar from "../components/TopBar";
 
 
 function App() {
   return (
     <div>
-      <HashRouter>
+      <Router>
+        <TopBar />
         <Switch>
           <Route exact path="/" component={HomePages} />
           <Route path="/login" component={UserLoginPage} />
@@ -19,7 +20,7 @@ function App() {
           <Route path="/user/:username" component={UserPage} />
           <Redirect to="/" />
         </Switch>
-      </HashRouter>
+      </Router>
       <LanguageSelector />
     </div>
   );
