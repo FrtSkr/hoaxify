@@ -12,7 +12,6 @@ class UserLoginPage extends React.Component {
         username: null,
         password: null,
         error: null
-
     };
 
     onChange = event => {
@@ -29,6 +28,7 @@ class UserLoginPage extends React.Component {
         event.preventDefault();
 
         const { username, password } = this.state;
+        const { onLoginSuccess } = this.props;
         const { push } = this.props.history;
         const creds = {
             username,
@@ -37,7 +37,9 @@ class UserLoginPage extends React.Component {
         this.setState({ error: null });
         try {
             await login(creds);
-            push('/')
+            onLoginSuccess(username);
+            push('/');
+
         } catch (apiError) {
             this.setState({
                 error: apiError.response.data.message
