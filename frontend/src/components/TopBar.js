@@ -7,7 +7,7 @@ import logo from '../assets/hoaxify.png';
 class TopBar extends Component {
 
     state = {
-        isLoggedIn: false,
+        isLoggedIn: true,
         username: 'user1'
     }
 
@@ -33,7 +33,6 @@ class TopBar extends Component {
             </ul>
         );
 
-        this.setState({ isLoggedIn: this.props.isLoggedIn })
         if (isLoggedIn) {
             links = (<ul className="navbar-nav ml-auto">
                 <li>
