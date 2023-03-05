@@ -44,7 +44,9 @@ class App extends Component {
               return <UserLoginPage  {...props} onLoginSuccess={this.onLoginSuccess} />
             }} />}
             {!isLoggedIn && <Route path="/signup" component={UserSignupPage} />}
-            <Route path="/user/:username" component={UserPage} />
+            <Route path="/user/:username" component={props => {
+              return <UserPage {...props} username={username} />
+            }} />
             <Redirect to="/" />
           </Switch>
         </Router>
