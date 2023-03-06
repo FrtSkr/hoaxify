@@ -7,36 +7,12 @@ import './i18n';
 import App from './container/App';
 // import AuthenticationContext from './shared/AuthenticationContext';
 import { Provider } from 'react-redux';
-import { legacy_createStore as createStore } from 'redux';
-
-
-const loggedInState = {
-  isLoggedIn: true,
-  username: "admin",
-  displayName: "displayAdmin",
-  image: null,
-  password: "Admin"
-}
-
-const defaultState = {
-  isLoggedIn: false,
-  username: undefined,
-  displayName: undefined,
-  image: undefined,
-  password: undefined
-}
+import configureStore from './redux/configureStore';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-const reducer = (state = { ...defaultState }, action) => {
-  if (action.type === 'logout-success') {
-    console.log(action.type);
-    return defaultState;
-  }
-  return state;
-};
+const store = configureStore();
 
-const store = createStore(reducer, loggedInState);
 root.render(
   <Provider store={store}>
 
