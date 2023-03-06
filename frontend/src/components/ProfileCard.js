@@ -1,5 +1,20 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { Authentication } from '../shared/AuthenticationContext';
+
+
+class ProfileCardContextWrapper extends Component {
+
+    static contextType = Authentication;
+
+    render() {
+        return (
+            <div>
+                <ProfileCard {...this.props} username={this.context.state.username} />
+            </div>
+        );
+    }
+};
 
 const ProfileCard = (props) => {
     const pathUsername = props.match.params.username;
@@ -17,5 +32,4 @@ const ProfileCard = (props) => {
         </div>
     );
 };
-
-export default withRouter(ProfileCard);
+export default withRouter(ProfileCardContextWrapper);
