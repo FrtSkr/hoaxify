@@ -2,11 +2,11 @@ import { legacy_createStore as createStore } from 'redux';
 import authReducer from './authReducer';
 
 const loggedInState = {
-    isLoggedIn: true,
-    username: "admin",
-    displayName: "displayAdmin",
-    image: null,
-    password: "Admin"
+    isLoggedIn: false,
+    username: undefined,
+    displayName: undefined,
+    image: undefined,
+    password: undefined
 }
 
 const configureStore = () => {
