@@ -1,10 +1,11 @@
 import { legacy_createStore as createStore } from 'redux';
 import authReducer from './authReducer';
+import SecurLS from 'secure-ls';
 
+const secureLs = new SecurLS();
 
-
-const configureStore = () => {
-
+const getStateFromStorage = () => {
+    const hoaxAuth = secureLs.get('hoax-auth');
     let loggedInState = {
         isLoggedIn: false,
         username: undefined,
@@ -13,20 +14,23 @@ const configureStore = () => {
         password: undefined
     }
 
-    const hoaxAuth = localStorage.getItem('hoax-auth');
-
     if (hoaxAuth) {
-        try {
-            loggedInState = JSON.parse(hoaxAuth)
-        } catch (error) {
-            console.log(error);
-        }
+        return hoaxAuth;
     }
+    return loggedInState
+}
 
-    const store = createStore(authReducer, loggedInState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const updateStateInStorage = newState => {
+    secureLs.set('hoax-auth', newState);
+
+}
+
+
+const configureStore = () => {
+    const store = createStore(authReducer, getStateFromStorage(), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
     store.subscribe(() => {
-        localStorage.setItem('hoax-auth', JSON.stringify(store.getState()));
+        updateStateInStorage(store.getState());
     })
 
     return store;
