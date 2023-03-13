@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../components/Input";
 import { withTranslation } from "react-i18next";
 import ButtonWithProgress from '../components/ButtonWithProgress';
@@ -7,78 +7,61 @@ import { connect } from "react-redux";
 import { loginHandler } from "../redux/authActions";
 // import { Authentication } from "../shared/AuthenticationContext";
 
-class UserLoginPage extends React.Component {
+const UserLoginPage = props => {
     //    static contextType = Authentication;
-    state = {
-        username: null,
-        password: null,
-        error: null
-    };
 
-    onChange = event => {
-        const { name, value } = event.target;
-        this.setState({
-            [name]: value,
-            error: null
-        });
+    const [username, setUsername] = useState();
+    const [password, setPassword] = useState();
+    const [error, setError] = useState();
 
-    }
+    useEffect(() => {
+        setError(undefined);
+    }, [username, password]);
 
-
-    onClickLogin = async event => {
+    const onClickLogin = async event => {
         event.preventDefault();
-
-
-        const { username, password } = this.state;
-        const { dispatch, history } = this.props;
+        const { dispatch, history } = props;
         const { push } = history;
 
         const creds = {
             username,
             password
         };
-        this.setState({ error: null });
+        setError(undefined);
         try {
             await dispatch(loginHandler(creds));
             push('/');
 
         } catch (apiError) {
-            console.log(apiError);
-            this.setState({
-                error: apiError.response.data.message
-            });
+            setError(apiError.response.data.message);
         }
     };
 
+    const { t, pendingApiCall } = props;
+    const isBtnEnable = username && password;
+    return (
+        <div className="container">
+            <form>
+                <h1 className="text-center">{t('Login')}</h1>
+                <Input label={t("Username")} inputName="username" onChange={event => setUsername(event.target.value)} />
+                <Input label={t("Password")} inputName="password" onChange={event => setPassword(event.target.value)} inputType="password" />
+                <br />
+                {error && <div className="alert alert-danger">
+                    {error}
+                </div>}
+                <div className="text-center">
+                    <ButtonWithProgress
+                        onClick={onClickLogin}
+                        disabled={pendingApiCall || !isBtnEnable}
+                        pendingApiCall={pendingApiCall}
+                        text={t('Login')}
 
-    render() {
-        const { username, password, error } = this.state;
-        const { t, pendingApiCall } = this.props;
-        const isBtnEnable = username && password;
-        return (
-            <div className="container">
-                <form>
-                    <h1 className="text-center">{t('Login')}</h1>
-                    <Input label={t("Username")} inputName="username" onChange={this.onChange} />
-                    <Input label={t("Password")} inputName="password" onChange={this.onChange} inputType="password" />
-                    <br />
-                    {error && <div className="alert alert-danger">
-                        {error}
-                    </div>}
-                    <div className="text-center">
-                        <ButtonWithProgress
-                            onClick={this.onClickLogin}
-                            disabled={pendingApiCall || !isBtnEnable}
-                            pendingApiCall={pendingApiCall}
-                            text={t('Login')}
+                    />
 
-                        />
-
-                    </div>
-                </form>
-            </div>
-        );
-    };
+                </div>
+            </form>
+        </div>
+    );
 
 }
 const UserSignupPageWithApiProgress = withApiProgress(UserLoginPage, "/api/1.0/auth")
