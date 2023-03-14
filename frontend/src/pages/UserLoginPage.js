@@ -2,14 +2,11 @@ import React, { useEffect, useState } from "react";
 import Input from "../components/Input";
 import { useTranslation } from "react-i18next";
 import ButtonWithProgress from '../components/ButtonWithProgress';
-import { withApiProgress } from "../shared/ApiProgress";
+import { useApiProgress } from "../shared/ApiProgress";
 import { useDispatch } from "react-redux";
 import { loginHandler } from "../redux/authActions";
-// import { Authentication } from "../shared/AuthenticationContext";
 
 const UserLoginPage = props => {
-    //    static contextType = Authentication;
-
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [error, setError] = useState();
@@ -39,8 +36,8 @@ const UserLoginPage = props => {
         }
     };
 
+    const pendingApiCall = useApiProgress('/api/1.0/auth');
     const { t } = useTranslation();
-    const { pendingApiCall } = props;
     const isBtnEnable = username && password;
     return (
         <div className="container">
@@ -68,6 +65,6 @@ const UserLoginPage = props => {
 
 }
 
-const UserSignupPageWithApiProgress = withApiProgress(UserLoginPage, "/api/1.0/auth")
 
-export default UserSignupPageWithApiProgress;
+
+export default UserLoginPage;
