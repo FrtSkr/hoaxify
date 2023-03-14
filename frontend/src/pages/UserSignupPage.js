@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Input from "../components/Input";
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import ButtonWithProgress from "../components/ButtonWithProgress";
 import { withApiProgress } from "../shared/ApiProgress";
 import { signupHandler } from "../redux/authActions";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const UserSignupPage = props => {
     const [form, setForm] = useState({
@@ -15,7 +15,7 @@ const UserSignupPage = props => {
     });
     const [errors, setErrors] = useState({});
 
-
+    const dispatch = useDispatch();
     const onChange = event => {
         const { name, value } = event.target;
         setErrors((previousError) => ({ ...previousError, [name]: undefined }));
@@ -27,7 +27,7 @@ const UserSignupPage = props => {
     const onClickSignUp = async event => {
         event.preventDefault();
         const { username, displayName, password } = form;
-        const { dispatch, history } = props;
+        const { history } = props;
         const { push } = history;
 
         const body = {
@@ -48,8 +48,9 @@ const UserSignupPage = props => {
 
     };
 
+    const { t } = useTranslation();
     const { username: usernameError, displayName: displayNameError, password: passwordError } = errors;
-    const { t, pendingApiCall } = props;
+    const { pendingApiCall } = props;
 
     let passwordRepeatError;
     if (form.password != form.passwordRepeat) {
@@ -77,7 +78,7 @@ const UserSignupPage = props => {
     );
 }
 
-const UserSignupPageWithTranslation = withTranslation()(UserSignupPage);
-const UserSignupPageWithApiProgressForSignupRequest = withApiProgress(UserSignupPageWithTranslation, "/api/1.0/users");
+
+const UserSignupPageWithApiProgressForSignupRequest = withApiProgress(UserSignupPage, "/api/1.0/users");
 const UserSignupPageWithApiProgressForAuthRequest = withApiProgress(UserSignupPageWithApiProgressForSignupRequest, "/api/1.0/auth");
-export default connect()(UserSignupPageWithApiProgressForAuthRequest);
+export default UserSignupPageWithApiProgressForAuthRequest;
