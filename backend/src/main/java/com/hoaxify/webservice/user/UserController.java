@@ -1,5 +1,7 @@
 package com.hoaxify.webservice.user;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.hoaxify.webservice.shared.GenericResponse;
+import com.hoaxify.webservice.shared.Views;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,7 +22,7 @@ public class UserController {
     }
 
     @GetMapping("/api/1.0/users")
-//    @JsonView(Views.Base.class)
+    @JsonView(Views.Base.class)
     public Page<User> getUsers(Pageable page){
         return userService.getUsers(page);
     }
