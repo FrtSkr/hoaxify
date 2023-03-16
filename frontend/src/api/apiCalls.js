@@ -16,6 +16,6 @@ export const changeLanguage = language => {
 };
 
 
-export const getUsers = users => {
-    return axios.get(baseUrl + 'users');
+export const getUsers = (page = 0, size = 3) => {
+    return axios.get(baseUrl + `users?page=${page}&size=${size}`);
 }
