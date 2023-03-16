@@ -5,19 +5,38 @@ import UserListItem from './UserListItem';
 class UserList extends Component {
 
     state = {
-        users: []
+        page: {
+            content: [],
+            number: 0,
+            size: 3
+        }
     }
 
     componentDidMount() {
-        getUsers().then(response => {
+        this.loadUsers();
+
+    };
+
+    onClickNext = () => {
+        const nextPage = this.state.page.number + 1;
+        this.loadUsers(nextPage);
+    }
+
+    onClickPrevious = () => {
+        const nextPage = this.state.page.number - 1;
+        this.loadUsers(nextPage);
+    }
+
+    loadUsers = page => {
+        getUsers(page).then(response => {
             this.setState({
-                users: response.data.content
+                page: response.data
             });
         });
     }
 
     render() {
-        const { users } = this.state;
+        const { content: users, last, first } = this.state.page;
         const { t } = this.props;
         return (
 
@@ -29,6 +48,11 @@ class UserList extends Component {
                             <UserListItem key={user.username} user={user} />
                         ))
                     }
+                </div>
+                <div>
+                    {first === false && (<button className='btn btn-sm btn-light' onClick={this.onClickPrevious}>{t('Back')}</button>)}
+
+                    {last === false && (<button className='btn btn-sm btn-light float-right' onClick={this.onClickNext}>{t('Next')}</button>)}
                 </div>
             </div>
         );
