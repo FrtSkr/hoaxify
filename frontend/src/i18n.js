@@ -6,6 +6,7 @@ i18n.use(initReactI18next).init({
         en: {
             translations: {
                 'Login': 'Login',
+                Logout: "Logout",
                 'Sign Up': 'Sign Up',
                 'Password missmatch': 'Password missmatch',
                 'Username': 'Username',
@@ -13,12 +14,14 @@ i18n.use(initReactI18next).init({
                 'Password': 'Password',
                 'Password Repeat': 'Password Repeat',
                 'Next': 'Next >',
-                'Back': '< Back'
+                'Back': '< Back',
+                "Load Failure": "Load Failure"
             }
         },
         tr: {
             translations: {
                 'Login': 'Giriş Yap',
+                Logout: "Çıkış Yap",
                 'Sign Up': 'Kayıt Ol',
                 'Password missmatch': 'Şifre aynı değil',
                 'Username': 'Kullanıcı Adı',
@@ -26,7 +29,8 @@ i18n.use(initReactI18next).init({
                 'Password': 'Şifre',
                 'Password Repeat': 'Şifre Tekrar',
                 Next: 'İleri >',
-                Back: '< Geri'
+                Back: '< Geri',
+                "Load Failure": "Liste alınamadı"
             }
         }
     },
