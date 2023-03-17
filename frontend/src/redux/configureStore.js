@@ -2,6 +2,7 @@ import { applyMiddleware, legacy_createStore as createStore, compose } from 'red
 import authReducer from './authReducer';
 import SecurLS from 'secure-ls';
 import thunk from 'redux-thunk';
+import { setAuthorizationHeader } from '../api/apiCalls';
 
 const secureLs = new SecurLS();
 
@@ -33,6 +34,7 @@ const configureStore = () => {
 
     store.subscribe(() => {
         updateStateInStorage(store.getState());
+        setAuthorizationHeader(store.getState());
     })
 
     return store;
