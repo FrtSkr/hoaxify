@@ -1,5 +1,6 @@
 package com.hoaxify.webservice.user;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.hoaxify.webservice.shared.CurrentUser;
 import com.hoaxify.webservice.shared.GenericResponse;
 import com.hoaxify.webservice.shared.Views;
 import com.hoaxify.webservice.user.vm.UserVM;
@@ -23,9 +24,9 @@ public class UserController {
     }
 
     @GetMapping("/api/1.0/users")
-    public Page<UserVM> getUsers(Pageable page){
+    public Page<UserVM> getUsers(Pageable page, @CurrentUser User user){
         // method reference, it came with Java 8 --> UserVM::new
-        return userService.getUsers(page).map(UserVM::new);
+        return userService.getUsers(page, user).map(UserVM::new);
     }
 
 
