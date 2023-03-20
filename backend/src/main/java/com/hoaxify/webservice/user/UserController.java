@@ -13,20 +13,27 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+@RequestMapping("/api/1.0")
 public class UserController {
     @Autowired
     UserService userService;
-    @PostMapping("/api/1.0/users")
+    @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     public GenericResponse createUser(@Valid @RequestBody User user){
         userService.save(user);
         return new GenericResponse("user created");
     }
 
-    @GetMapping("/api/1.0/users")
+    @GetMapping("/users")
     public Page<UserVM> getUsers(Pageable page, @CurrentUser User user){
         // method reference, it came with Java 8 --> UserVM::new
         return userService.getUsers(page, user).map(UserVM::new);
+    }
+
+    @GetMapping("/users/{username}")
+    UserVM getUser(@PathVariable String username){
+       User user = userService.getByUsername(username);
+       return new UserVM(user);
     }
 
 
