@@ -15,7 +15,8 @@ i18n.use(initReactI18next).init({
                 'Password Repeat': 'Password Repeat',
                 'Next': 'Next >',
                 'Back': '< Back',
-                "Load Failure": "Load Failure"
+                "Load Failure": "Load Failure",
+                "User not found": "User not found"
             }
         },
         tr: {
@@ -30,7 +31,8 @@ i18n.use(initReactI18next).init({
                 'Password Repeat': 'Şifre Tekrar',
                 Next: 'İleri >',
                 Back: '< Geri',
-                "Load Failure": "Liste alınamadı"
+                "Load Failure": "Liste alınamadı",
+                "User not found": "Kullanıcı bulunamadı"
             }
         }
     },
