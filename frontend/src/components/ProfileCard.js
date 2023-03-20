@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import defaultPicture from '../assets/profile.png';
 const ProfileCard = props => {
     const { username: loggedInUsername } = useSelector(store => ({ username: store.username }));
     const routeParams = useParams();
     const pathUsername = routeParams.username;
+    const { user } = props;
+    const { username, displayName, image } = user;
 
     let message = "We cannot edit";
     if (pathUsername === loggedInUsername) {
@@ -12,8 +15,15 @@ const ProfileCard = props => {
     }
 
     return (
-        <div>
-            {message}
+        <div className='card text-center'>
+            <div className='card-header'>
+                <img className='rounded-circle shadow' width="200" height="200" alt='user profile image' src={defaultPicture} />
+            </div>
+            <div className='card-body'>
+                <h3>
+                    {displayName}@{username}
+                </h3>
+            </div>
         </div>
     );
 };
