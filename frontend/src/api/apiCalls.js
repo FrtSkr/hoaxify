@@ -30,6 +30,9 @@ export const setAuthorizationHeader = ({ username, password, isLoggedIn }) => {
 };
 
 export const getUser = username => {
-    console.log(username);
     return axios.get(`${baseUrl}users/${username}`);
 };
+
+export const updateUser = (username, body) => {
+    return axios.put(`${baseUrl}users/${username}`, body);
+}
