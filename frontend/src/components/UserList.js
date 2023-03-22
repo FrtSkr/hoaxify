@@ -13,7 +13,7 @@ const UserList = () => {
         size: 3
     });
 
-    const pendingApiCall = useApiProgress("/api/1.0/users?page");
+    const pendingApiCall = useApiProgress('get', "/api/1.0/users?page");
 
     useEffect(() => {
         loadUsers();
@@ -41,6 +41,7 @@ const UserList = () => {
     }
     const { content: users, last, first } = page;
     const { t } = useTranslation();
+
     let actionDiv = (
         <div>
             {first === false && (<button className='btn btn-sm btn-light' onClick={onClickPrevious}>{t('Back')}</button>)}
