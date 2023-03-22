@@ -3,6 +3,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.hoaxify.webservice.shared.CurrentUser;
 import com.hoaxify.webservice.shared.GenericResponse;
 import com.hoaxify.webservice.shared.Views;
+import com.hoaxify.webservice.user.vm.UserUpdateVM;
 import com.hoaxify.webservice.user.vm.UserVM;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,12 @@ public class UserController {
     @GetMapping("/users/{username}")
     UserVM getUser(@PathVariable String username){
        User user = userService.getByUsername(username);
+       return new UserVM(user);
+    }
+
+    @PutMapping("/users/{username}")
+    UserVM updateUser(@RequestBody UserUpdateVM updatedUser, @PathVariable String username){
+       User user = userService.updateUser(username, updatedUser);
        return new UserVM(user);
     }
 

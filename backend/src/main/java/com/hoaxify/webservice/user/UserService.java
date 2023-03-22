@@ -1,6 +1,7 @@
 package com.hoaxify.webservice.user;
 
 import com.hoaxify.webservice.error.NotFoundException;
+import com.hoaxify.webservice.user.vm.UserUpdateVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,7 @@ public class UserService {
         if( user != null){
             return userRepository.findByUsernameNot(user.getUsername(), page);
         }
+
         return userRepository.findAll(page);
     }
 
@@ -37,5 +39,11 @@ public class UserService {
             throw new NotFoundException("User Not Found", "/api/1.0/users/{username}");
         }
         return inDb;
+    }
+
+    public User updateUser(String username, UserUpdateVM updatedUser) {
+        User inDb = getByUsername(username);
+        inDb.setDisplayName(updatedUser.getDisplayName());
+        return userRepository.save(inDb);
     }
 }
