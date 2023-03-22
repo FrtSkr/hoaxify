@@ -5,15 +5,24 @@ import Input from './Input';
 import { updateUser } from '../api/apiCalls';
 import ButtonWithProgress from './ButtonWithProgress';
 import { useApiProgress } from '../shared/ApiProgress';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 const ProfileCard = props => {
     const [inEditMode, setInEditMode] = useState(false);
     const [updatedDisplayName, setUpdatedDisplayName] = useState();
-
+    const { username: loggenInUsername } = useSelector(store => ({ username: store.username }))
+    const routeParams = useParams();
+    const pathUsername = routeParams.username;
     const [user, setUser] = useState({});
+    const [editable, setEditable] = useState(false);
     useEffect(() => {
         setUser(props.user);
-        console.log("set user use effect");
     }, [props.user]);
+
+    useEffect(() => {
+        setEditable(pathUsername == loggenInUsername);
+
+    }, [pathUsername, loggenInUsername]);
 
     const { username, displayName, image } = user;
     const { t } = useTranslation();
@@ -48,7 +57,6 @@ const ProfileCard = props => {
     };
 
     const pendingApiCall = useApiProgress('put', `/api/1.0/users/${username}`);
-
     const editMode = (
         <>
             <Input label={t('Change Display Name')} defaultValue={displayName} onChange={onChangeDisplayName} />
@@ -87,11 +95,12 @@ const ProfileCard = props => {
         <h3>
             {displayName}@{username}
         </h3>
-        <button className='btn btn-success d-inline-flex' onClick={() => setInEditMode(true)}>
+        {editable && (<button className='btn btn-success d-inline-flex' onClick={() => setInEditMode(true)}>
             <span className="material-symbols-outlined">edit</span>
             {t('Edit')}
-        </button>
+        </button>)}
     </div>);
+
     return (
         <div className='card text-center'>
             <div className='card-header'>
