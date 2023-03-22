@@ -48,8 +48,8 @@ const UserSignupPage = props => {
 
     };
 
-    const pendingApiCallSingup = useApiProgress("/api/1.0/users");
-    const pendingApiCallLogin = useApiProgress("/api/1.0/auth");
+    const pendingApiCallSingup = useApiProgress("post", "/api/1.0/users");
+    const pendingApiCallLogin = useApiProgress("post", "/api/1.0/auth");
     const pendingApiCall = pendingApiCallLogin || pendingApiCallSingup;
 
     const { t } = useTranslation();
