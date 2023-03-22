@@ -2,10 +2,11 @@ import React from "react";
 
 const ButtonWithProgress = (props) => {
 
-    const { onClick, pendingApiCall, disabled, text } = props;
+    const { onClick, pendingApiCall, disabled, text, className } = props;
+    const defineClassName = className || "btn btn-primary";
     return (
 
-        <button className="btn btn-primary"
+        <button className={defineClassName}
             onClick={onClick}
             disabled={disabled}>
             {pendingApiCall &&
