@@ -1,5 +1,6 @@
 package com.hoaxify.webservice.user;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.hoaxify.webservice.error.ApiError;
 import com.hoaxify.webservice.shared.CurrentUser;
 import com.hoaxify.webservice.shared.GenericResponse;
 import com.hoaxify.webservice.shared.Views;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -38,7 +41,15 @@ public class UserController {
     }
 
     @PutMapping("/users/{username}")
+    // Spring Security'nin sağlamış olduğu bir kolaylık. # işaretini kullanarak metodun parametrelerine ulaşabiliyoruz.
+    // Bu dile SpEL yani Spring Expression Language deniyor.
+    @PreAuthorize("#username == principal.username")
     UserVM updateUser(@RequestBody UserUpdateVM updatedUser, @PathVariable String username){
+        // PreAuthorize işlemini yazdığımız işin aşağıdaki yetki kontrolüne gerek kalmadı
+//        if(!loggedInUser.getUsername().equals(username)){
+//            ApiError error = new ApiError(403, "Cannot change another users data", "/api/1.0/users/"+username);
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+//        }
        User user = userService.updateUser(username, updatedUser);
        return new UserVM(user);
     }
