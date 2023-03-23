@@ -15,6 +15,8 @@ const ProfileCard = props => {
     const pathUsername = routeParams.username;
     const [user, setUser] = useState({});
     const [editable, setEditable] = useState(false);
+    const [newImage, setNewImage] = useState();
+
     useEffect(() => {
         setUser(props.user);
     }, [props.user]);
@@ -30,6 +32,8 @@ const ProfileCard = props => {
     useEffect(() => {
         if (!inEditMode) {
             setUpdatedDisplayName(undefined);
+            setNewImage(undefined);
+            console.log("girdi");
         } else {
             setUpdatedDisplayName(displayName);
         }
@@ -43,7 +47,8 @@ const ProfileCard = props => {
 
     const onClickSave = async () => {
         const body = {
-            displayName: updatedDisplayName
+            displayName: updatedDisplayName,
+            image: newImage
         }
         try {
             const resposen = await updateUser(username, body);
@@ -52,9 +57,16 @@ const ProfileCard = props => {
         } catch (error) {
 
         };
-
-
     };
+
+    const onChangeFile = (event) => {
+        const file = event.target.files[0];
+        const fileReader = new FileReader();
+        fileReader.onloadend = () => {
+            setNewImage(fileReader.result);
+        }
+        fileReader.readAsDataURL(file);
+    }
 
     const pendingApiCall = useApiProgress('put', `/api/1.0/users/${username}`);
     const editMode = (
@@ -62,6 +74,7 @@ const ProfileCard = props => {
             <Input label={t('Change Display Name')} defaultValue={displayName} onChange={onChangeDisplayName} />
             <br />
             <div>
+                <input type='file' onChange={onChangeFile} /><br /><br />
                 <ButtonWithProgress
                     className='btn btn-primary d-inline-flex'
                     onClick={onClickSave}
@@ -104,7 +117,12 @@ const ProfileCard = props => {
     return (
         <div className='card text-center'>
             <div className='card-header'>
-                <ProfileImageWithDefault className='rounded-circle shadow' width="200" height="200" alt='user profile image' image={image} />
+                <ProfileImageWithDefault
+                    className='rounded-circle shadow'
+                    width="200" height="200"
+                    alt='user profile image'
+                    image={image}
+                    tempImage={newImage} />
             </div>
             <div className='card-body'>
                 {!inEditMode ?
