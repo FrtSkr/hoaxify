@@ -2,10 +2,7 @@ package com.hoaxify.webservice.user;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.hoaxify.webservice.shared.Views;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -39,6 +36,7 @@ public class User implements UserDetails {
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "{hoaxify.constraint.password.Pattern.message}")
     private String password;
 
+    @Lob
     private String image;
 
     @Override
