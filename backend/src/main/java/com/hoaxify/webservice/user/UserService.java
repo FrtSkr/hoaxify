@@ -54,14 +54,16 @@ public class UserService {
         User inDb = getByUsername(username);
         inDb.setDisplayName(updatedUser.getDisplayName());
         if(updatedUser.getImage() != null){
+            String oldImageName = inDb.getImage();
             try{
                 String storedFileName = fileService.writeBase64EncodedStringToFile(updatedUser.getImage());
                 inDb.setImage(storedFileName);
             }catch (IOException e){
                 e.printStackTrace();;
             }
-
+            fileService.deleteFile(oldImageName);
         }
+
         return userRepository.save(inDb);
     }
 
