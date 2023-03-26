@@ -33,7 +33,6 @@ const ProfileCard = props => {
         if (!inEditMode) {
             setUpdatedDisplayName(undefined);
             setNewImage(undefined);
-            console.log("girdi");
         } else {
             setUpdatedDisplayName(displayName);
         }
@@ -46,9 +45,10 @@ const ProfileCard = props => {
     }
 
     const onClickSave = async () => {
+
         const body = {
             displayName: updatedDisplayName,
-            image: newImage
+            image: newImage.split(',')[1]
         }
         try {
             const resposen = await updateUser(username, body);
@@ -73,8 +73,9 @@ const ProfileCard = props => {
         <>
             <Input label={t('Change Display Name')} defaultValue={displayName} onChange={onChangeDisplayName} />
             <br />
+            <input type='file' onChange={onChangeFile} /><br /><br />
             <div>
-                <input type='file' onChange={onChangeFile} /><br /><br />
+
                 <ButtonWithProgress
                     className='btn btn-primary d-inline-flex'
                     onClick={onClickSave}
@@ -122,7 +123,8 @@ const ProfileCard = props => {
                     width="200" height="200"
                     alt='user profile image'
                     image={image}
-                    tempImage={newImage} />
+                    tempimage={newImage}
+                />
             </div>
             <div className='card-body'>
                 {!inEditMode ?
