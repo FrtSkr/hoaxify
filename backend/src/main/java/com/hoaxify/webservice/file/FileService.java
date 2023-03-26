@@ -1,5 +1,7 @@
 package com.hoaxify.webservice.file;
 
+import com.hoaxify.webservice.configuration.AppConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -11,9 +13,12 @@ import java.util.UUID;
 
 @Service
 public class FileService {
+
+    @Autowired
+    AppConfiguration appConfiguration;
     public String writeBase64EncodedStringToFile(String image) throws IOException {
         String filename = generateRandomName();
-        File target = new File("picture-storage/"+filename);
+        File target = new File(appConfiguration.getUploadPath()+"/"+filename);
         OutputStream outputStream = new FileOutputStream(target);
 
         byte[] base64encoded = Base64.getDecoder().decode(image);
