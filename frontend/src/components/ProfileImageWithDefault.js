@@ -2,10 +2,19 @@ import React from "react";
 import defaultPicture from '../assets/profile.png'
 
 export const ProfileImageWithDefault = props => {
-    const { image } = props;
+    const { image, tempimage } = props;
+    let imageSource = defaultPicture;
+    if (image) {
+        imageSource = 'images/' + image;
+    }
 
-
-
-    return <img src={image ? image : defaultPicture} alt='Profile' {...props} />
+    return <img
+        src={tempimage || imageSource}
+        alt='Profile' {...props}
+        onError={
+            (event) => {
+                event.target.src = defaultPicture;
+            }
+        } />
 
 };
