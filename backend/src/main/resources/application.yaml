@@ -14,8 +14,28 @@ spring:
           validation:
             mode: none
 
-data:
-  web:
-    pageable:
-      default-page-size: 10
-      max-page-size: 100
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 100
+  profiles:
+    active:
+      - dev
+
+# yaml dosyalarında yeni bir profil oluşturmak için "---" kullanılır.
+---
+spring:
+  config:
+    activate:
+      on-profile: production
+hoaxify:
+  upload-path: storage-production
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+hoaxify:
+  upload-path: storage-dev
