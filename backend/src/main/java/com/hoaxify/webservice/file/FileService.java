@@ -1,7 +1,7 @@
 package com.hoaxify.webservice.file;
 
 import com.hoaxify.webservice.configuration.AppConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.tika.Tika;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -16,9 +16,17 @@ import java.util.UUID;
 @Service
 public class FileService {
 
-    @Autowired
+
     AppConfiguration appConfiguration;
+    Tika tika;
+
+    public FileService(AppConfiguration appConfiguration) {
+        this.appConfiguration = appConfiguration;
+        this.tika = new Tika();
+    }
+
     public String writeBase64EncodedStringToFile(String image) throws IOException {
+
         String filename = generateRandomName();
         File target = new File(appConfiguration.getUploadPath()+"/"+filename);
         OutputStream outputStream = new FileOutputStream(target);
@@ -44,5 +52,10 @@ public class FileService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String detectType(String image) {
+        byte[] base64encoded = Base64.getDecoder().decode(image);
+        return tika.detect(base64encoded);
     }
 }
