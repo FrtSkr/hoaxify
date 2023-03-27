@@ -16,6 +16,7 @@ const ProfileCard = props => {
     const [user, setUser] = useState({});
     const [editable, setEditable] = useState(false);
     const [newImage, setNewImage] = useState();
+    const [validationErrors, setValidationErrors] = useState({});
 
     useEffect(() => {
         setUser(props.user);
@@ -25,6 +26,13 @@ const ProfileCard = props => {
         setEditable(pathUsername == loggenInUsername);
 
     }, [pathUsername, loggenInUsername]);
+
+    useEffect(() => {
+        setValidationErrors(previousValidationErrors => ({
+            ...previousValidationErrors, displayName: undefined
+
+        }));
+    }, [updatedDisplayName])
 
     const { username, displayName, image } = user;
     const { t } = useTranslation();
@@ -58,7 +66,7 @@ const ProfileCard = props => {
             setUser(resposen.data);
             setInEditMode(false);
         } catch (error) {
-
+            setValidationErrors(error.response.data.validationErrors);
         };
     };
 
@@ -75,9 +83,10 @@ const ProfileCard = props => {
     }
 
     const pendingApiCall = useApiProgress('put', `/api/1.0/users/${username}`);
+    const { displayName: displayNameError } = validationErrors;
     const editMode = (
         <>
-            <Input label={t('Change Display Name')} defaultValue={displayName} onChange={onChangeDisplayName} />
+            <Input label={t('Change Display Name')} defaultValue={displayName} onChange={onChangeDisplayName} error={displayNameError} />
             <br />
             <input type='file' onChange={onChangeFile} /><br /><br />
             <div>
