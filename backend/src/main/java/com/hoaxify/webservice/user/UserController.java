@@ -44,7 +44,7 @@ public class UserController {
     // Spring Security'nin sağlamış olduğu bir kolaylık. # işaretini kullanarak metodun parametrelerine ulaşabiliyoruz.
     // Bu dile SpEL yani Spring Expression Language deniyor.
     @PreAuthorize("#username == principal.username")
-    UserVM updateUser(@RequestBody UserUpdateVM updatedUser, @PathVariable String username){
+    UserVM updateUser(@Valid @RequestBody UserUpdateVM updatedUser, @PathVariable String username){
         // PreAuthorize işlemini yazdığımız işin aşağıdaki yetki kontrolüne gerek kalmadı
 //        if(!loggedInUser.getUsername().equals(username)){
 //            ApiError error = new ApiError(403, "Cannot change another users data", "/api/1.0/users/"+username);
