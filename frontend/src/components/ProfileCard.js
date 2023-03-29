@@ -34,6 +34,13 @@ const ProfileCard = props => {
         }));
     }, [updatedDisplayName])
 
+    useEffect(() => {
+        setValidationErrors(previousValidationErrors => ({
+            ...previousValidationErrors, image: undefined
+
+        }));
+    }, [newImage])
+
     const { username, displayName, image } = user;
     const { t } = useTranslation();
 
@@ -83,12 +90,12 @@ const ProfileCard = props => {
     }
 
     const pendingApiCall = useApiProgress('put', `/api/1.0/users/${username}`);
-    const { displayName: displayNameError } = validationErrors;
+    const { displayName: displayNameError, image: imageError } = validationErrors;
     const editMode = (
         <>
             <Input label={t('Change Display Name')} defaultValue={displayName} onChange={onChangeDisplayName} error={displayNameError} />
             <br />
-            <input type='file' onChange={onChangeFile} /><br /><br />
+            <Input type='file' onChange={onChangeFile} error={imageError} /><br /><br />
             <div>
 
                 <ButtonWithProgress
