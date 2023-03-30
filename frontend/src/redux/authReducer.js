@@ -14,7 +14,7 @@ const authReducer = (state = { ...defaultState }, action) => {
     if (action.type === ACTIONS.LOGOUT_SUCCES) {
         return defaultState;
     }
-    if (action.type === ACTIONS.LOGIN_SUCCES) {
+    else if (action.type === ACTIONS.LOGIN_SUCCES) {
         const { isLoggedIn, username, displayName, image, password } = action.payload;
         state = {
             isLoggedIn: isLoggedIn,
@@ -25,6 +25,12 @@ const authReducer = (state = { ...defaultState }, action) => {
 
         }
         return state;
+    } else if (action.type == ACTIONS.UPDATE_SUCCESS) {
+
+        return {
+            ...state,
+            ...action.payload
+        };
     }
     return state;
 };
