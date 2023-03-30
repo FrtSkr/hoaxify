@@ -6,7 +6,8 @@ import { updateUser } from '../api/apiCalls';
 import ButtonWithProgress from './ButtonWithProgress';
 import { useApiProgress } from '../shared/ApiProgress';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateSuccess } from '../redux/authActions';
 const ProfileCard = props => {
     const [inEditMode, setInEditMode] = useState(false);
     const [updatedDisplayName, setUpdatedDisplayName] = useState();
@@ -17,6 +18,7 @@ const ProfileCard = props => {
     const [editable, setEditable] = useState(false);
     const [newImage, setNewImage] = useState();
     const [validationErrors, setValidationErrors] = useState({});
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setUser(props.user);
@@ -69,9 +71,11 @@ const ProfileCard = props => {
             image
         }
         try {
-            const resposen = await updateUser(username, body);
-            setUser(resposen.data);
+            const response = await updateUser(username, body);
+            setUser(response.data);
             setInEditMode(false);
+            console.log('calisti');
+            dispatch(updateSuccess(response.data));
         } catch (error) {
             setValidationErrors(error.response.data.validationErrors);
         };
