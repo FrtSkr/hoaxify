@@ -36,3 +36,7 @@ export const getUser = username => {
 export const updateUser = (username, body) => {
     return axios.put(`${baseUrl}users/${username}`, body);
 }
+
+export const postHoax = hoax => {
+    return axios.post(`${baseUrl}hoaxes`, hoax);
+}
