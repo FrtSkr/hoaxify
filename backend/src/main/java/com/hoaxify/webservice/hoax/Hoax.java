@@ -1,6 +1,7 @@
 package com.hoaxify.webservice.hoax;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.sql.Timestamp;
@@ -14,6 +15,8 @@ public class Hoax {
     @GeneratedValue
     private long id;
 
+    @Size(min = 1, max = 1000)
+    @Column(length = 1000)
     private String content;
 
     @Temporal(TemporalType.TIMESTAMP)
