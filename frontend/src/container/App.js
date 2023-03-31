@@ -26,7 +26,6 @@ const App = () => {
           <Redirect to="/" />
         </Switch>
       </Router>
-      <LanguageSelector />
     </div >
   );
 }
