@@ -46,6 +46,6 @@ export const postHoax = hoax => {
     return axios.post(`${baseUrl}${enumDomainName.hoaxes}`, hoax);
 }
 
-export const getHoaxes = () => {
-    return axios.get(`${baseUrl}${enumDomainName.hoaxes}`);
+export const getHoaxes = (page = 0) => {
+    return axios.get(`${baseUrl}${enumDomainName.hoaxes}?page=` + page);
 }
