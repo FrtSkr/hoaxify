@@ -3,22 +3,27 @@ import { getHoaxes } from '../api/apiCalls';
 import { useTranslation } from 'react-i18next';
 import HoaxView from './HoaxView';
 
-function HoaxFeed(props) {
-    const [hoaxPage, setHoaxPage] = useState({ content: [] });
+const HoaxFeed = props => {
+    const [hoaxPage, setHoaxPage] = useState({ content: [], last: true, number: 0 });
     const { t } = useTranslation();
     useEffect(() => {
-        const loadHoaxes = async () => {
-            try {
-                const response = await getHoaxes();
-                setHoaxPage(response.data);
-
-            } catch (error) {
-
-            }
-        }
         loadHoaxes();
-    }, [])
-    const { content } = hoaxPage;
+    }, []);
+
+    const loadHoaxes = async (page) => {
+        try {
+            const response = await getHoaxes(page);
+            setHoaxPage(previousHoaxPage => ({
+                ...response.data,
+                content: [...previousHoaxPage.content, ...response.data.content]
+            }));
+
+        } catch (error) {
+
+        }
+    }
+
+    const { content, last, number } = hoaxPage;
     if (content.length == 0) {
         return (
             <div className='alert alert-secondary text-center'>
@@ -32,6 +37,9 @@ function HoaxFeed(props) {
             {content.map(hoax => {
                 return <HoaxView key={hoax.id} hoax={hoax} />
             })}
+            {!last && <div className='alert alert-secondary text-center' style={{ cursor: 'pointer' }} onClick={() => loadHoaxes(number + 1)}>
+                {t('Load old hoaxes')}
+            </div>}
         </div>
     );
 }
