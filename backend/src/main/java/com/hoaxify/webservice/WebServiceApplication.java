@@ -29,12 +29,11 @@ public class WebServiceApplication {
 				user.setDisplayName("display"+i);
 				user.setPassword("User1234");
 				userService.save(user);
-			}
-
-			for(int i = 1; i <= 30; i++){
-				Hoax hoax = new Hoax();
-				hoax.setContent("hoax - "+ i);
-				hoaxService.save(hoax);
+				for (int j=0; j<2; j++){
+					Hoax hoax = new Hoax();
+					hoax.setContent("hoax ("+ j + ") from user ("+ i + ")");
+					hoaxService.save(hoax, user);
+				}
 			}
 		};
 	}
