@@ -1,5 +1,6 @@
 package com.hoaxify.webservice.hoax;
 
+import com.hoaxify.webservice.hoax.vm.HoaxVM;
 import com.hoaxify.webservice.shared.CurrentUser;
 import com.hoaxify.webservice.shared.GenericResponse;
 import com.hoaxify.webservice.user.User;
@@ -27,7 +28,7 @@ public class HoaxController {
     }
 
     @GetMapping("/hoaxes")
-    public Page<Hoax> getHoaxes(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable page){
-        return hoaxService.getHoaxes(page);
+    public Page<HoaxVM> getHoaxes(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable page){
+        return hoaxService.getHoaxes(page).map(HoaxVM::new);
     }
 }
