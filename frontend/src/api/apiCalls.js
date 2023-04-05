@@ -1,5 +1,5 @@
 import axios from "axios"; // for HTTP request
-const enumDomainName = {
+export const enumDomainName = {
     users: 'users',
     auth: 'auth',
     hoaxes: 'hoaxes'
@@ -46,6 +46,8 @@ export const postHoax = hoax => {
     return axios.post(`${baseUrl}${enumDomainName.hoaxes}`, hoax);
 }
 
-export const getHoaxes = (page = 0) => {
-    return axios.get(`${baseUrl}${enumDomainName.hoaxes}?page=` + page);
+export const getHoaxes = (username, page = 0) => {
+    const path = username ? `${baseUrl}${enumDomainName.users}/${username}/${enumDomainName.hoaxes}?page=${page}`
+        : `${baseUrl}${enumDomainName.hoaxes}?page=${page}`;
+    return axios.get(path);
 }
