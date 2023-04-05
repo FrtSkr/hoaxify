@@ -1,6 +1,8 @@
 package com.hoaxify.webservice.hoax;
 
+import com.hoaxify.webservice.user.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -21,5 +23,9 @@ public class Hoax {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }
