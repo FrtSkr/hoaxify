@@ -1,6 +1,8 @@
 package com.hoaxify.webservice.hoax;
 
+import com.hoaxify.webservice.shared.CurrentUser;
 import com.hoaxify.webservice.shared.GenericResponse;
+import com.hoaxify.webservice.user.User;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,8 +21,8 @@ public class HoaxController {
 
     @PostMapping("/hoaxes")
     @ResponseStatus(HttpStatus.CREATED)
-    public GenericResponse saveHoax(@Valid @RequestBody Hoax hoax){
-        hoaxService.save(hoax);
+    public GenericResponse saveHoax(@Valid @RequestBody Hoax hoax, @CurrentUser User user){
+        hoaxService.save(hoax, user);
         return new GenericResponse("Hoax created");
     }
 
