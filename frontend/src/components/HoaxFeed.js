@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getHoaxes, enumDomainName } from '../api/apiCalls';
+import { getHoaxes, enumDomainName, getOldHoaxes } from '../api/apiCalls';
 import { useTranslation } from 'react-i18next';
 import HoaxView from './HoaxView';
 import { useApiProgress } from '../shared/ApiProgress';
@@ -15,20 +15,35 @@ const HoaxFeed = props => {
     const pendingApiCall = useApiProgress('get', path);
 
     useEffect(() => {
-        loadHoaxes();
-    }, []);
+        const loadHoaxes = async (page) => {
+            try {
+                const response = await getHoaxes(username, page);
+                setHoaxPage(previousHoaxPage => ({
+                    ...response.data,
+                    content: [...previousHoaxPage.content, ...response.data.content]
+                }));
 
-    const loadHoaxes = async (page) => {
+            } catch (error) {
+
+            }
+        }
+        loadHoaxes();
+    }, [username]);
+
+
+    const loadOldHoaxes = async () => {
+        const lastHoaxIndex = hoaxPage.content.length - 1;
+        const lastHoaxId = hoaxPage.content[lastHoaxIndex].id;
         try {
-            const response = await getHoaxes(username, page);
+            const response = await getOldHoaxes(lastHoaxId);
             setHoaxPage(previousHoaxPage => ({
                 ...response.data,
                 content: [...previousHoaxPage.content, ...response.data.content]
             }));
-
         } catch (error) {
 
         }
+
     }
 
     const { content, last, number } = hoaxPage;
@@ -50,7 +65,7 @@ const HoaxFeed = props => {
                 style={{ cursor: pendingApiCall ? 'not-allowed' : 'pointer' }}
                 onClick={() => {
                     if (!pendingApiCall) {
-                        loadHoaxes(number + 1)
+                        loadOldHoaxes();
                     }
                 }}>
                 {pendingApiCall ? <Spinner /> : t('Load old hoaxes')}
