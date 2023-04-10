@@ -12,7 +12,15 @@ const HoaxFeed = props => {
     const { username } = useParams();
     const path = username ? `/api/1.0/${enumDomainName.users}/${username}/${enumDomainName.hoaxes}?page=`
         : `/api/1.0/${enumDomainName.hoaxes}?page=`;
-    const pendingApiCall = useApiProgress('get', path);
+    const initialHoaxLoadProgress = useApiProgress('get', path);
+
+    let lastHoaxId = 0;
+    if (hoaxPage.content.length > 0) {
+        const lastHoaxIndex = hoaxPage.content.length - 1;
+        lastHoaxId = hoaxPage.content[lastHoaxIndex].id;
+    }
+    const oldHoaxPath = username ? `/api/1.0/${enumDomainName.users}/${username}/${enumDomainName.hoaxes}/${lastHoaxId}` : `/api/1.0/${enumDomainName.hoaxes}/${lastHoaxId}`
+    const loadOldHoaxesProgress = useApiProgress('get', oldHoaxPath, true);
 
     useEffect(() => {
         const loadHoaxes = async (page) => {
@@ -32,10 +40,8 @@ const HoaxFeed = props => {
 
 
     const loadOldHoaxes = async () => {
-        const lastHoaxIndex = hoaxPage.content.length - 1;
-        const lastHoaxId = hoaxPage.content[lastHoaxIndex].id;
         try {
-            const response = await getOldHoaxes(lastHoaxId);
+            const response = await getOldHoaxes(lastHoaxId, username);
             setHoaxPage(previousHoaxPage => ({
                 ...response.data,
                 content: [...previousHoaxPage.content, ...response.data.content]
@@ -46,11 +52,11 @@ const HoaxFeed = props => {
 
     }
 
-    const { content, last, number } = hoaxPage;
+    const { content, last } = hoaxPage;
     if (content.length == 0) {
         return (
             <div className='alert alert-secondary text-center'>
-                {pendingApiCall ? <Spinner /> : t('There are no hoaxes')}
+                {initialHoaxLoadProgress ? <Spinner /> : t('There are no hoaxes')}
             </div>
         )
     }
@@ -62,13 +68,13 @@ const HoaxFeed = props => {
             })}
             {!last && (<div
                 className='alert alert-secondary text-center'
-                style={{ cursor: pendingApiCall ? 'not-allowed' : 'pointer' }}
+                style={{ cursor: loadOldHoaxesProgress ? 'not-allowed' : 'pointer' }}
                 onClick={() => {
-                    if (!pendingApiCall) {
+                    if (!loadOldHoaxesProgress) {
                         loadOldHoaxes();
                     }
                 }}>
-                {pendingApiCall ? <Spinner /> : t('Load old hoaxes')}
+                {loadOldHoaxesProgress ? <Spinner /> : t('Load old hoaxes')}
             </div>)}
         </div>
     );
