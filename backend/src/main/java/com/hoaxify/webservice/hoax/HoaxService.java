@@ -1,6 +1,7 @@
 package com.hoaxify.webservice.hoax;
 
 import com.hoaxify.webservice.user.User;
+import com.hoaxify.webservice.user.UserRepository;
 import com.hoaxify.webservice.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,9 @@ public class HoaxService {
 
     @Autowired
     UserService userService;
+    @Autowired
+    private UserRepository userRepository;
+
     public void save(Hoax hoax, User user) {
         hoax.setUser(user);
         hoaxRepository.save(hoax);
@@ -43,5 +47,10 @@ public class HoaxService {
 
     public long getNewHoaxesCount(long id) {
         return hoaxRepository.countByIdGreaterThan(id);
+    }
+
+    public long getNewHoaxesCountofUser(long id, String username) {
+        User inDb= userService.getByUsername(username);
+        return hoaxRepository.countByIdGreaterThanAndUser(id, inDb);
     }
 }
