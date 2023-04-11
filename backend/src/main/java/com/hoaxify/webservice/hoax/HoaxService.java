@@ -6,8 +6,10 @@ import com.hoaxify.webservice.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -49,8 +51,12 @@ public class HoaxService {
         return hoaxRepository.countByIdGreaterThan(id);
     }
 
-    public long getNewHoaxesCountofUser(long id, String username) {
+    public long getNewHoaxesCountOfUser(long id, String username) {
         User inDb= userService.getByUsername(username);
         return hoaxRepository.countByIdGreaterThanAndUser(id, inDb);
+    }
+
+    public List<Hoax> getNewHoaxes(long id, Sort sort) {
+        return hoaxRepository.findByIdGreaterThan(id, sort);
     }
 }
