@@ -11,9 +11,10 @@ const HoaxFeed = props => {
     const [newHoaxCount, setNewNoaxCount] = useState();
     const { t } = useTranslation();
     const { username } = useParams();
-    const path = username ? `/api/1.0/${enumDomainName.users}/${username}/${enumDomainName.hoaxes}?page=`
+
+    const initialPath = username ? `/api/1.0/${enumDomainName.users}/${username}/${enumDomainName.hoaxes}?page=`
         : `/api/1.0/${enumDomainName.hoaxes}?page=`;
-    const initialHoaxLoadProgress = useApiProgress('get', path);
+    const initialHoaxLoadProgress = useApiProgress('get', initialPath);
 
     let lastHoaxId = 0;
     let firstHoaxId = 0;
@@ -22,10 +23,12 @@ const HoaxFeed = props => {
         const lastHoaxIndex = hoaxPage.content.length - 1;
         lastHoaxId = hoaxPage.content[lastHoaxIndex].id;
     }
-    const oldHoaxPath = username ? `/api/1.0/${enumDomainName.users}/${username}/${enumDomainName.hoaxes}/${lastHoaxId}` : `/api/1.0/${enumDomainName.hoaxes}/${lastHoaxId}`
+    const oldHoaxPath = username ? `/api/1.0/${enumDomainName.users}/${username}/${enumDomainName.hoaxes}/${lastHoaxId}`
+        : `/api/1.0/${enumDomainName.hoaxes}/${lastHoaxId}`
     const loadOldHoaxesProgress = useApiProgress('get', oldHoaxPath, true);
 
-    const newHoaxesPath = `/api/1.0/${enumDomainName.hoaxes}/${firstHoaxId}?direction=after`;
+    const newHoaxesPath = username ? `/api/1.0/${enumDomainName.users}/${username}/${enumDomainName.hoaxes}/${firstHoaxId}?direction=after`
+        : `/api/1.0/${enumDomainName.hoaxes}/${firstHoaxId}?direction=after`;
     const loadNewHoaxesProgress = useApiProgress('get', newHoaxesPath, true);
 
     useEffect(() => {
@@ -75,7 +78,7 @@ const HoaxFeed = props => {
 
     const loadNewHoaxes = async () => {
         try {
-            const response = await getNewHoaxes(firstHoaxId);
+            const response = await getNewHoaxes(firstHoaxId, username);
             setHoaxPage(previousHoaxPage => ({
                 ...previousHoaxPage,
                 content: [...response.data, ...previousHoaxPage.content]
