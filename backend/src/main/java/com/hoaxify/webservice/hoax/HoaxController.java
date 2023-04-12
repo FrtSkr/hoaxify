@@ -44,7 +44,7 @@ public class HoaxController {
     }
 
     @GetMapping("/hoaxes/{id:[0-9]+}")
-    public ResponseEntity<?> getHoaxesRelative(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+    public ResponseEntity<?> getHoaxesRelative(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable page,
                                           @PathVariable long id,
                                                @RequestParam(name = "count", required = false, defaultValue = "false") boolean count,
                                                @RequestParam(name = "direction", defaultValue = "before") String direction
@@ -57,22 +57,28 @@ public class HoaxController {
         }
         if(direction.equals("after")){
 
-            List<HoaxVM> newHoaxes = hoaxService.getNewHoaxes(id, pageable.getSort())
+            List<HoaxVM> newHoaxes = hoaxService.getNewHoaxes(id, page.getSort())
                     .stream().map(HoaxVM::new).toList();
             return ResponseEntity.ok(newHoaxes);
         }
-        return ResponseEntity.ok(hoaxService.getOldHoaxes(id, pageable).map(HoaxVM::new));
+        return ResponseEntity.ok(hoaxService.getOldHoaxes(id, page).map(HoaxVM::new));
     }
 
     @GetMapping("/users/{username}/hoaxes/{id:[0-9]+}")
     public ResponseEntity<?> getUserHoaxesRelative(@PathVariable long id, @PathVariable String username,
                                               @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable page,
-                                              @RequestParam(name = "count", required = false, defaultValue = "false") boolean count){
+                                              @RequestParam(name = "count", required = false, defaultValue = "false") boolean count,
+                                                   @RequestParam(name = "direction", defaultValue = "before") String direction){
         if(count){
             long newHoaxCount = hoaxService.getNewHoaxesCountOfUser(id, username);
             Map<String, Long> response = new HashMap<>();
             response.put("count", newHoaxCount);
             return ResponseEntity.ok(response);
+        }
+        if(direction.equals("after")){
+            List<HoaxVM> newHoaxesOfUser = hoaxService.getNewHoaxesOfUser(id, username, page.getSort())
+                    .stream().map(HoaxVM::new).toList();
+            return ResponseEntity.ok(newHoaxesOfUser);
         }
         return ResponseEntity.ok(hoaxService.getOldHoaxesOfUser(id, username, page).map(HoaxVM::new));
     }
