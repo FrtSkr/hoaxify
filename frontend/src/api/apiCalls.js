@@ -63,3 +63,8 @@ export const getNewHoaxCount = (id, username) => {
         : `${baseUrl}${enumDomainName.hoaxes}/${id}?count=true`;
     return axios.get(path);
 }
+
+export const getNewHoaxes = (id) => {
+    const path = `${baseUrl}${enumDomainName.hoaxes}/${id}?direction=after`;
+    return axios.get(path);
+}
