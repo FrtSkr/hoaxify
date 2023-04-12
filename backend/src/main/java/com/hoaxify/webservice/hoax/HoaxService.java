@@ -1,7 +1,6 @@
 package com.hoaxify.webservice.hoax;
 
 import com.hoaxify.webservice.user.User;
-import com.hoaxify.webservice.user.UserRepository;
 import com.hoaxify.webservice.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,7 +9,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class HoaxService {
@@ -20,8 +18,6 @@ public class HoaxService {
 
     @Autowired
     UserService userService;
-    @Autowired
-    private UserRepository userRepository;
 
     public void save(Hoax hoax, User user) {
         hoax.setUser(user);
@@ -58,5 +54,10 @@ public class HoaxService {
 
     public List<Hoax> getNewHoaxes(long id, Sort sort) {
         return hoaxRepository.findByIdGreaterThan(id, sort);
+    }
+
+    public List<Hoax> getNewHoaxesOfUser(long id, String username, Sort sort) {
+        User inDb = userService.getByUsername(username);
+        return hoaxRepository.findByIdGreaterThanAndUser(id, inDb, sort);
     }
 }
