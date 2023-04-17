@@ -6,6 +6,7 @@ import { postHoax, postHoaxAttachment } from '../api/apiCalls';
 import { useApiProgress } from '../shared/ApiProgress';
 import ButtonWithProgress from './ButtonWithProgress';
 import Input from './Input';
+import AutoUploadImage from './AutoUploadImage';
 const HoaxSubmit = () => {
     const { image } = useSelector(store => ({ image: store.image }));
     const [focused, setFocused] = useState(false);
@@ -66,7 +67,8 @@ const HoaxSubmit = () => {
     if (errors.content) {
         textAreaClass += ' is-invalid';
     }
-    const pendingApiCall = useApiProgress('post', '/api/1.0/hoaxes');
+    const pendingApiCall = useApiProgress('post', '/api/1.0/hoaxes', true);
+    const pendingFileUpload = useApiProgress('post', '/api/1.0/hoax-attachments', true);
 
     return (
         <div className='card p-1 flex-row'>
@@ -83,21 +85,21 @@ const HoaxSubmit = () => {
                 </div>
                 {focused && (
                     <>
-                        <Input type="file" onChange={onChangeFile} />
-                        {newImage && <img className='img-thumbnail' src={newImage} alt="hoax-attachment" />}
+                        {!newImage && <Input type="file" onChange={onChangeFile} />}
+                        {newImage && <AutoUploadImage image={newImage} uploading={pendingFileUpload} />}
                         <div className='text-end mt-1'>
                             <ButtonWithProgress
                                 className='btn btn-primary'
                                 onClick={onClickHoaxify}
                                 pendingApiCall={pendingApiCall}
-                                disabled={pendingApiCall}
+                                disabled={pendingApiCall || pendingFileUpload}
                                 text="Hoaxify"
                             />
                             <button
                                 className='btn btn-light d-inline-flex'
                                 style={{ marginLeft: '10px' }}
                                 onClick={() => setFocused(false)}
-                                disabled={pendingApiCall}>
+                                disabled={pendingApiCall || pendingFileUpload}>
                                 <span className="material-symbols-outlined">
                                     close
                                 </span>
