@@ -23,6 +23,10 @@ spring:
     active:
       - dev
 
+  servlet:
+    multipart:
+      max-file-size: 10MB
+
 # yaml dosyalarında yeni bir profil oluşturmak için "---" kullanılır.
 ---
 spring:
