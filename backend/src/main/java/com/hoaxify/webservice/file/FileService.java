@@ -3,6 +3,7 @@ package com.hoaxify.webservice.file;
 import com.hoaxify.webservice.configuration.AppConfiguration;
 import org.apache.tika.Tika;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -57,5 +58,18 @@ public class FileService {
     public String detectType(String image) {
         byte[] base64encoded = Base64.getDecoder().decode(image);
         return tika.detect(base64encoded);
+    }
+
+    public String saveHoaxAttachment(MultipartFile multipartFile) {
+        String filename = generateRandomName();
+        File target = new File(appConfiguration.getUploadPath()+"/"+filename);
+        try{
+            OutputStream outputStream = new FileOutputStream(target);
+            outputStream.write(multipartFile.getBytes());
+            outputStream.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return filename;
     }
 }
