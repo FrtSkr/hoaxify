@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ProfileImageWithDefault } from './ProfileImageWithDefault';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { postHoax } from '../api/apiCalls';
+import { postHoax, postHoaxAttachment } from '../api/apiCalls';
 import { useApiProgress } from '../shared/ApiProgress';
 import ButtonWithProgress from './ButtonWithProgress';
 import Input from './Input';
@@ -53,6 +53,13 @@ const HoaxSubmit = () => {
             setNewImage(fileReader.result);
         }
         fileReader.readAsDataURL(file);
+        uploadFile(file);
+    }
+
+    const uploadFile = async (file) => {
+        const attachment = new FormData();
+        attachment.append('file', file);
+        await postHoaxAttachment(attachment);
     }
 
     let textAreaClass = 'form-control';
