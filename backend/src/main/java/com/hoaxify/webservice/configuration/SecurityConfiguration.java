@@ -35,6 +35,8 @@ public class SecurityConfiguration {
                 .authenticated()
                 .requestMatchers(HttpMethod.POST, "/api/1.0/hoaxes")
                 .authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/1.0/hoax-attachments")
+                .authenticated()
                 .and()
                 .authorizeHttpRequests().anyRequest().permitAll();
 
