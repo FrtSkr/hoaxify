@@ -69,3 +69,7 @@ export const getNewHoaxes = (id, username) => {
         : `${baseUrl}${enumDomainName.hoaxes}/${id}?direction=after`;
     return axios.get(path);
 }
+
+export const postHoaxAttachment = attachment => {
+    return axios.post(`${baseUrl}hoax-attachments`, attachment);
+}
