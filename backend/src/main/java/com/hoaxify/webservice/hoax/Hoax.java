@@ -1,9 +1,8 @@
 package com.hoaxify.webservice.hoax;
 
+import com.hoaxify.webservice.file.FileAttachment;
 import com.hoaxify.webservice.user.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.sql.Timestamp;
@@ -26,5 +25,8 @@ public class Hoax {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToOne(mappedBy = "hoax")
+    private FileAttachment fileAttachment;
 
 }
