@@ -2,6 +2,9 @@ package com.hoaxify.webservice.file;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface FileAttachmentRepository extends JpaRepository<FileAttachment, Long> {
+import java.util.Date;
+import java.util.List;
 
+public interface FileAttachmentRepository extends JpaRepository<FileAttachment, Long> {
+    List<FileAttachment> findByDateBeforeAndHoaxIsNull(Date date);
 }
