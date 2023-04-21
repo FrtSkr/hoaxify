@@ -1,5 +1,6 @@
 package com.hoaxify.webservice.hoax;
 
+import com.hoaxify.webservice.hoax.vm.HoaxSubmitVM;
 import com.hoaxify.webservice.hoax.vm.HoaxVM;
 import com.hoaxify.webservice.shared.CurrentUser;
 import com.hoaxify.webservice.shared.GenericResponse;
@@ -27,8 +28,8 @@ public class HoaxController {
 
     @PostMapping("/hoaxes")
     @ResponseStatus(HttpStatus.CREATED)
-    public GenericResponse saveHoax(@Valid @RequestBody Hoax hoax, @CurrentUser User user){
-        hoaxService.save(hoax, user);
+    public GenericResponse saveHoax(@Valid @RequestBody HoaxSubmitVM hoaxSubmitVM, @CurrentUser User user){
+        hoaxService.save(hoaxSubmitVM, user);
         return new GenericResponse("Hoax created");
     }
 
