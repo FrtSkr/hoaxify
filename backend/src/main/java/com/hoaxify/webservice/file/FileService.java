@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.Date;
@@ -37,7 +38,7 @@ public class FileService {
     public String writeBase64EncodedStringToFile(String image) throws IOException {
 
         String filename = generateRandomName();
-        File target = new File(appConfiguration.getUploadPath()+"/"+filename);
+        File target = new File(appConfiguration.getProfileStoragePath()+"/"+filename);
         OutputStream outputStream = new FileOutputStream(target);
 
         byte[] base64encoded = Base64.getDecoder().decode(image);
@@ -51,13 +52,23 @@ public class FileService {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
-    public void deleteFile(String oldImageName) {
+    public void deleteProfileImage(String oldImageName) {
         if(oldImageName == null){
             return;
         }
+        deleteFile(Paths.get(appConfiguration.getProfileStoragePath(), oldImageName));
+    }
 
+    public void deleteAttachmentFile(String oldImageName) {
+        if(oldImageName == null){
+            return;
+        }
+        deleteFile(Paths.get(appConfiguration.getAttachmentStoragePath(), oldImageName));
+    }
+
+    private void deleteFile(Path path){
         try {
-            Files.deleteIfExists(Paths.get(appConfiguration.getUploadPath(), oldImageName));
+            Files.deleteIfExists(path);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -70,7 +81,7 @@ public class FileService {
 
     public FileAttachment saveHoaxAttachment(MultipartFile multipartFile) {
         String filename = generateRandomName();
-        File target = new File(appConfiguration.getUploadPath()+"/"+filename);
+        File target = new File(appConfiguration.getAttachmentStoragePath()+"/"+filename);
         try{
             OutputStream outputStream = new FileOutputStream(target);
             outputStream.write(multipartFile.getBytes());
@@ -91,7 +102,7 @@ public class FileService {
         List<FileAttachment> filesToBeDeleted = fileAttachmentRepository.findByDateBeforeAndHoaxIsNull(twentyFourHoursAgo);
         for(FileAttachment file : filesToBeDeleted){
             // delete file
-            deleteFile(file.getName());
+            deleteAttachmentFile(file.getName());
             // delete from table
             fileAttachmentRepository.deleteById(file.getId());
         }
