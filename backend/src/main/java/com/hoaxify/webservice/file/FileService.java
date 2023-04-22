@@ -74,25 +74,30 @@ public class FileService {
         }
     }
 
-    public String detectType(String image) {
-        byte[] base64encoded = Base64.getDecoder().decode(image);
-        return tika.detect(base64encoded);
+    public String detectType(byte[] arr) {
+        return tika.detect(arr);
     }
-
+    public String detectType(String base64) {
+        byte[] base64encoded = Base64.getDecoder().decode(base64);
+        return detectType(base64encoded);
+    }
     public FileAttachment saveHoaxAttachment(MultipartFile multipartFile) {
         String filename = generateRandomName();
         File target = new File(appConfiguration.getAttachmentStoragePath()+"/"+filename);
+        String fileType = "";
         try{
+            byte[] arr = multipartFile.getBytes();
             OutputStream outputStream = new FileOutputStream(target);
-            outputStream.write(multipartFile.getBytes());
+            outputStream.write(arr);
             outputStream.close();
+            fileType = detectType(arr);
         }catch (IOException e){
             e.printStackTrace();
         }
         FileAttachment attachment = new FileAttachment();
         attachment.setName(filename);
         attachment.setDate(new Date());
-
+        attachment.setFileType(fileType);
         return fileAttachmentRepository.save(attachment);
     }
 
