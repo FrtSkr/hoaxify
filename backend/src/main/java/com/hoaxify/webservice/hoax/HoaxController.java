@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -62,7 +63,8 @@ public class HoaxController {
     }
 
     @DeleteMapping("/hoaxes/{id:[0-9]+}")
-    GenericResponse deleteHoax(@PathVariable long id){
+    @PreAuthorize("@hoaxSecurity.isAllowedToDelete(#id, principal)")
+    GenericResponse deleteHoax(@PathVariable long id, @CurrentUser User loggedInUser){
         hoaxService.delete(id);
         return new GenericResponse("Hoax removed");
     }
