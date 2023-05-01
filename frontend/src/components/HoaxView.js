@@ -3,13 +3,17 @@ import { ProfileImageWithDefault } from './ProfileImageWithDefault';
 import { Link } from 'react-router-dom';
 import { format } from 'timeago.js';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 const HoaxView = (props) => {
+    const loggedInUser = useSelector(store => store.username);
     const { hoax } = props;
     const { user, content, timestamp, fileAttachment } = hoax;
     const { username, displayName, image } = user;
 
     const { i18n } = useTranslation();
     const formatted = format(timestamp, i18n.language);
+
+    const ownedByLoggedInUser = loggedInUser == username;
 
     return (
         <div className='card p-1'>
@@ -22,6 +26,11 @@ const HoaxView = (props) => {
                         </h6>
                     </Link>
                 </div>
+                {ownedByLoggedInUser && <button className="btn btn-delete-link btn-sm">
+                    <span class="material-symbols-outlined">
+                        delete
+                    </span>
+                </button>}
             </div>
             <div className='text-start ms-1'>
                 {content}
