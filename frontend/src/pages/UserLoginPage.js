@@ -44,7 +44,7 @@ const UserLoginPage = props => {
             <form>
                 <h1 className="text-center">{t('Login')}</h1>
                 <Input label={t("Username")} onChange={event => setUsername(event.target.value)} />
-                <Input label={t("Password")} onChange={event => setPassword(event.target.value)} inputType="password" />
+                <Input label={t("Password")} onChange={event => setPassword(event.target.value)} type="password" />
                 <br />
                 {error && <div className="alert alert-danger">
                     {error}

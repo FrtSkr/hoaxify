@@ -68,8 +68,8 @@ const UserSignupPage = props => {
                 <h1 className="text-center">{t('Sign Up')}</h1>
                 <Input label={t("Username")} error={usernameError} inputName="username" onChange={event => onChange(event)} />
                 <Input label={t("Display Name")} error={displayNameError} inputName="displayName" onChange={event => onChange(event)} />
-                <Input label={t("Password")} error={passwordError} inputName="password" onChange={event => onChange(event)} inputType="password" />
-                <Input label={t("Password Repeat")} error={passwordRepeatError} inputName="passwordRepeat" onChange={event => onChange(event)} inputType="password" />
+                <Input label={t("Password")} error={passwordError} inputName="password" onChange={event => onChange(event)} type="password" />
+                <Input label={t("Password Repeat")} error={passwordRepeatError} inputName="passwordRepeat" onChange={event => onChange(event)} type="password" />
                 <br />
                 <div className="text-center">
                     <ButtonWithProgress
