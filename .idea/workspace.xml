@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b858a053-1a7f-4eb8-a2d2-67485e88cbb6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/backend/devdb.mv.db" beforeDir="false" afterPath="$PROJECT_DIR$/backend/devdb.mv.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/picture-storage/2248f4bd1d594b4ab9f69e352dab58d4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/picture-storage/cf15cbe1feaf4791aa46990f1d1c187e" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/hoaxify/webservice/WebServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/hoaxify/webservice/WebServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/hoaxify/webservice/configuration/PageSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/hoaxify/webservice/configuration/PageSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/hoaxify/webservice/error/ApiError.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/hoaxify/webservice/error/ApiError.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/hoaxify/webservice/error/ErrorHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/hoaxify/webservice/error/ErrorHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/hoaxify/webservice/shared/ProfileImage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/hoaxify/webservice/shared/ProfileImageValidator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/hoaxify/webservice/user/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/hoaxify/webservice/user/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/hoaxify/webservice/user/vm/UserVM.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/hoaxify/webservice/user/vm/UserVM.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Use Maven wrapper" />
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2LBXdTjvr4D6VRu0T4WhMpz4X4N" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/spring-boot-projects/web-service/web-service/.idea/runConfigurations",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.startup.tasks"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b858a053-1a7f-4eb8-a2d2-67485e88cbb6" name="Changes" comment="" />
+      <created>1675345546267</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1675345546267</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

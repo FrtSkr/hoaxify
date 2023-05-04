@@ -35,6 +35,7 @@ public class ErrorHandler implements ErrorController {
         ApiError apiError = new ApiError(status, message, path);
 
         if(attributes.containsKey("errors")){
+            @SuppressWarnings("unchecked")
             List<FieldError> fieldErrors = (List<FieldError>)attributes.get("errors");
             Map<String, String> validationError = new HashMap<>();
 

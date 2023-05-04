@@ -2,6 +2,7 @@ package com.hoaxify.webservice;
 
 import com.hoaxify.webservice.hoax.Hoax;
 import com.hoaxify.webservice.hoax.HoaxService;
+import com.hoaxify.webservice.hoax.vm.HoaxSubmitVM;
 import com.hoaxify.webservice.user.User;
 import com.hoaxify.webservice.user.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -29,10 +30,10 @@ public class WebServiceApplication {
 				user.setDisplayName("display"+i);
 				user.setPassword("User1234");
 				userService.save(user);
-				for (int j=0; j<2; j++){
-					Hoax hoax = new Hoax();
-					hoax.setContent("hoax ("+ j + ") from user ("+ i + ")");
-					hoaxService.save(hoax, user);
+				for (int j=0; j<20; j++){
+					HoaxSubmitVM hoaxSubmitVM = new HoaxSubmitVM();
+					hoaxSubmitVM.setContent("hoax ("+ j + ") from user ("+ i + ")");
+					hoaxService.save(hoaxSubmitVM, user);
 				}
 			}
 		};

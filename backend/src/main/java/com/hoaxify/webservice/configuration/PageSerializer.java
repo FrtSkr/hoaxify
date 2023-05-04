@@ -9,7 +9,7 @@ import org.springframework.data.domain.Page;
 import java.io.IOException;
 
 // Tüm kullanıcıları istenilen formatta cevap olarak dönmek için kullanılan bir yöntemdir.
-// Örnek olması amacıyla yaptık, farklı bir yol kullanacağız.
+// Örnek olması amacıyla yaptık, bu işlemi view model kullanarak halledeceğiz.
 @JsonComponent
 public class PageSerializer extends JsonSerializer<Page<?>> {
     @Override
