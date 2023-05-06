@@ -26,7 +26,7 @@ public class Hoax {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne(mappedBy = "hoax")
+    @OneToOne(mappedBy = "hoax", cascade = CascadeType.REMOVE)
     private FileAttachment fileAttachment;
 
 }

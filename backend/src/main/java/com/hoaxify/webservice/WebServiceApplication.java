@@ -1,6 +1,5 @@
 package com.hoaxify.webservice;
 
-import com.hoaxify.webservice.hoax.Hoax;
 import com.hoaxify.webservice.hoax.HoaxService;
 import com.hoaxify.webservice.hoax.vm.HoaxSubmitVM;
 import com.hoaxify.webservice.user.User;
