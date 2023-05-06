@@ -24,7 +24,11 @@ i18n.use(initReactI18next).init({
                 Users: 'Users',
                 Profile: 'Profile',
                 'There are no hoaxes': 'There are no hoaxes',
-                'Load old hoaxes': 'Load old Hoaxes'
+                'Load old hoaxes': 'Load old Hoaxes',
+                'There are new hoaxes': 'There are new hoaxes',
+                'Delete': 'Delete',
+                'Are you sure to delete hoax?': 'Are you sure to delete hoax?',
+                'Delete Hoax': 'Delete Hoax'
             }
         },
         tr: {
@@ -48,7 +52,11 @@ i18n.use(initReactI18next).init({
                 Users: 'Kullanıcılar',
                 Profile: "Hesap",
                 'There are no hoaxes': 'Hiç hoax bulunamadı',
-                'Load old hoaxes': 'Geçmiş Hoaxları Getir'
+                'Load old hoaxes': 'Geçmiş Hoaxları Getir',
+                'There are new hoaxes': 'Yeni Hoaxları Getir',
+                'Delete': 'Sil',
+                'Are you sure to delete hoax?': 'Hoax\'u silmek istediğinden emin misin?',
+                'Delete Hoax': 'Hoax\'u Sil'
             }
         }
     },

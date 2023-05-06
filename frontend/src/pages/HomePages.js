@@ -6,10 +6,6 @@ import HoaxFeed from '../components/HoaxFeed';
 const HomePages = () => {
     const { isLoggedIn } = useSelector(store => ({ isLoggedIn: store.isLoggedIn }));
 
-    let userListClassName = 'col-6';
-    if (isLoggedIn == false) {
-        userListClassName = 'col-12';
-    }
     return (
         <div className='container'>
             <div className='row'>
@@ -22,7 +18,7 @@ const HomePages = () => {
                     }
                     <HoaxFeed />
                 </div>
-                <div className={userListClassName}>
+                <div className="col-6">
                     <UserList />
 
                 </div>

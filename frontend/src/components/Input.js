@@ -2,7 +2,7 @@ import React from "react";
 
 const Input = (props) => {
     const { error, inputName, label, onChange, type, defaultValue } = props;
-    const className = "form-control";
+    let className = "form-control";
     if (type == 'file') {
         className += '-file';
     }

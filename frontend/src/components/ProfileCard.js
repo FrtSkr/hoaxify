@@ -74,7 +74,6 @@ const ProfileCard = props => {
             const response = await updateUser(username, body);
             setUser(response.data);
             setInEditMode(false);
-            console.log('calisti');
             dispatch(updateSuccess(response.data));
         } catch (error) {
             setValidationErrors(error.response.data.validationErrors);
@@ -116,7 +115,6 @@ const ProfileCard = props => {
                         </>
                     }
                 />
-
                 <button
                     className='btn btn-light d-inline-flex'
                     style={{ marginLeft: '10px' }}
