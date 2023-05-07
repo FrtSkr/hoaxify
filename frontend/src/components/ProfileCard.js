@@ -7,8 +7,9 @@ import ButtonWithProgress from './ButtonWithProgress';
 import { useApiProgress } from '../shared/ApiProgress';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateSuccess } from '../redux/authActions';
+import { logoutSuccess, updateSuccess } from '../redux/authActions';
 import Modal from './Modal';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom';
 const ProfileCard = props => {
     const [inEditMode, setInEditMode] = useState(false);
     const [updatedDisplayName, setUpdatedDisplayName] = useState();
@@ -21,6 +22,7 @@ const ProfileCard = props => {
     const [modalVisible, setModalVisible] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
     const dispatch = useDispatch();
+    const history = useHistory();
 
     useEffect(() => {
         setUser(props.user);
@@ -102,6 +104,9 @@ const ProfileCard = props => {
         try{
             const respoense = await deleteUser(username);
             setModalVisible(false);
+            dispatch(logoutSuccess());
+            history.push('/');
+
 
         }catch(error){
 
