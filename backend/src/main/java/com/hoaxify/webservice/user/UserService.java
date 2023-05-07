@@ -2,8 +2,10 @@ package com.hoaxify.webservice.user;
 
 import com.hoaxify.webservice.error.NotFoundException;
 import com.hoaxify.webservice.file.FileService;
+import com.hoaxify.webservice.hoax.HoaxService;
 import com.hoaxify.webservice.user.vm.UserUpdateVM;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,16 +18,27 @@ import java.io.IOException;
 
 @Service
 public class UserService {
-    @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
-    FileService fileService;
-    public UserService(PasswordEncoder passwordEncoder, FileService fileService) {
+    private FileService fileService;
+
+    private HoaxService hoaxService;
+
+
+
+    public UserService(PasswordEncoder passwordEncoder, FileService fileService, UserRepository userRepository) {
 
         this.passwordEncoder = passwordEncoder;
         this.fileService = fileService;
+        this.userRepository = userRepository;
+
+    }
+
+    @Autowired
+    public void setHoaxService(@Lazy HoaxService hoaxService) {
+        this.hoaxService = hoaxService;
     }
 
 
@@ -68,4 +81,9 @@ public class UserService {
     }
 
 
+    public void deleteUser(String username) {
+        hoaxService.deleteHoaxesOfUser(username);
+        User inDB = userRepository.findByUsername(username);
+        userRepository.delete(inDB);
+    }
 }
