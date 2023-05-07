@@ -1,7 +1,6 @@
 package com.hoaxify.webservice.user;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.hoaxify.webservice.shared.Views;
+import com.hoaxify.webservice.hoax.Hoax;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -12,6 +11,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @Entity
@@ -38,6 +38,9 @@ public class User implements UserDetails {
 
     @Lob
     private String image;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Hoax> hoaxes;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

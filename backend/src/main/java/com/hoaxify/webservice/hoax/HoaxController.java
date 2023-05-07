@@ -24,8 +24,12 @@ import java.util.Map;
 @RequestMapping("/api/1.0")
 public class HoaxController {
 
-    @Autowired
+
     HoaxService hoaxService;
+
+    public HoaxController(HoaxService hoaxService) {
+        this.hoaxService = hoaxService;
+    }
 
     @PostMapping("/hoaxes")
     @ResponseStatus(HttpStatus.CREATED)
