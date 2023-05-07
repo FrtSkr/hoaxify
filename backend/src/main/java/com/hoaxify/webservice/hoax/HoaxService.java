@@ -7,6 +7,7 @@ import com.hoaxify.webservice.hoax.vm.HoaxSubmitVM;
 import com.hoaxify.webservice.user.User;
 import com.hoaxify.webservice.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -19,17 +20,28 @@ import java.util.Optional;
 @Service
 public class HoaxService {
 
-    @Autowired
-    HoaxRepository hoaxRepository;
+    private UserService userService;
 
-    @Autowired
-    UserService userService;
 
-    @Autowired
-    FileAttachmentRepository fileAttachmentRepository;
 
+
+
+    private HoaxRepository hoaxRepository;
+    private FileAttachmentRepository fileAttachmentRepository;
+
+
+    private FileService fileService;
+
+    public HoaxService(HoaxRepository hoaxRepository, FileAttachmentRepository fileAttachmentRepository, FileService fileService) {
+        super();
+        this.hoaxRepository = hoaxRepository;
+        this.fileAttachmentRepository = fileAttachmentRepository;
+        this.fileService = fileService;
+    }
     @Autowired
-    FileService fileService;
+    public void setUserService(@Lazy UserService userService) {
+        this.userService = userService;
+    }
 
     public void save(HoaxSubmitVM hoaxSubmitVM, User user) {
         Hoax hoax = new Hoax();
@@ -111,4 +123,12 @@ public class HoaxService {
         hoaxRepository.deleteById(id);
 
     }
+
+    public void deleteHoaxesOfUser(String username){
+        User inDB = userService.getByUsername(username);
+        Specification<Hoax> userOwned = userIs(inDB);
+        List<Hoax> hoaxesToBeRemoved = hoaxRepository.findAll(userOwned);
+        hoaxRepository.deleteAll(hoaxesToBeRemoved);
+    }
+
 }
