@@ -21,26 +21,18 @@ import java.util.Optional;
 public class HoaxService {
 
     private UserService userService;
-
-
-
-
-
     private HoaxRepository hoaxRepository;
     private FileAttachmentRepository fileAttachmentRepository;
 
 
     private FileService fileService;
 
-    public HoaxService(HoaxRepository hoaxRepository, FileAttachmentRepository fileAttachmentRepository, FileService fileService) {
+    public HoaxService(HoaxRepository hoaxRepository, FileAttachmentRepository fileAttachmentRepository, FileService fileService, UserService userService) {
         super();
         this.hoaxRepository = hoaxRepository;
         this.fileAttachmentRepository = fileAttachmentRepository;
         this.fileService = fileService;
-    }
-    @Autowired
-    public void setUserService(@Lazy UserService userService) {
-        this.userService = userService;
+        this.userService= userService;
     }
 
     public void save(HoaxSubmitVM hoaxSubmitVM, User user) {
@@ -121,14 +113,6 @@ public class HoaxService {
             fileService.deleteAttachmentFile(fileName);
         }
         hoaxRepository.deleteById(id);
-
-    }
-
-    public void deleteHoaxesOfUser(String username){
-        User inDB = userService.getByUsername(username);
-        Specification<Hoax> userOwned = userIs(inDB);
-        List<Hoax> hoaxesToBeRemoved = hoaxRepository.findAll(userOwned);
-        hoaxRepository.deleteAll(hoaxesToBeRemoved);
     }
 
 }
