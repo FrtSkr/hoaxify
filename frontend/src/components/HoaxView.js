@@ -81,6 +81,8 @@ const HoaxView = (props) => {
             </div>
         }
         pendingApiCall={pendingApiCall}
+        title={t("Delete Hoax")}
+        okButtonText={t("Delete Hoax")}
          />
         </>
     );
