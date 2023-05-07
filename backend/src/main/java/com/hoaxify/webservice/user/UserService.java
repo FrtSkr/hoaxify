@@ -83,7 +83,6 @@ public class UserService {
 
     public void deleteUser(String username) {
         hoaxService.deleteHoaxesOfUser(username);
-        User inDB = userRepository.findByUsername(username);
-        userRepository.delete(inDB);
+        userRepository.deleteByUserName(username);
     }
 }
