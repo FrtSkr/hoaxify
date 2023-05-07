@@ -13,7 +13,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
      // UserProjection için kullanılan metot. Ama biz farklı bir yöntem uygulayacağız.
 //     @Query(value = "Select u from User u")
 //     Page<UserProjection> getAllUsersProjection(Pageable page);
-
-     @Transactional
-     void deleteByUserName(String username);
 }
