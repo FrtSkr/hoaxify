@@ -1,6 +1,7 @@
 package com.hoaxify.webservice.auth;
 
 import com.hoaxify.webservice.user.User;
+import com.hoaxify.webservice.user.UserRepository;
 import com.hoaxify.webservice.user.UserService;
 import com.hoaxify.webservice.user.vm.UserVM;
 import io.jsonwebtoken.Jwts;
@@ -11,16 +12,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
 
-    UserService userService;
+    UserRepository userRepository;
     PasswordEncoder passwordEncoder;
 
-    public AuthService(UserService userService, PasswordEncoder passwordEncoder){
-         this.userService = userService;
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder){
+         this.userRepository = userRepository;
          this.passwordEncoder = passwordEncoder;
      }
 
     public AuthResponse authenticate(Credentials credentials) {
-        User inDB = userService.getByUsername(credentials.getUsername());
+        User inDB = userRepository.findByUsername(credentials.getUsername());
         if(inDB != null){
             boolean matches = passwordEncoder.matches(credentials.getPassword(), inDB.getPassword());
             if(matches){
@@ -31,8 +32,11 @@ public class AuthService {
                 response.setToken(token);
                 return response;
             }
+            else {
+                throw new AuthException();
+            }
+        }else {
+            throw new AuthException();
         }
-        return null;
-
     }
 }
