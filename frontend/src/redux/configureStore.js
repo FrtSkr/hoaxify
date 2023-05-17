@@ -13,7 +13,8 @@ const getStateFromStorage = () => {
         username: undefined,
         displayName: undefined,
         image: undefined,
-        password: undefined
+        password: undefined,
+        token: undefined
     }
 
     if (hoaxAuth) {
