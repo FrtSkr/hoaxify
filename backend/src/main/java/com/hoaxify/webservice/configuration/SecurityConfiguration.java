@@ -26,11 +26,10 @@ public class SecurityConfiguration {
 
         //Cross Site Request Forgery (CSRF)
         http.csrf().disable();
-        http.httpBasic().authenticationEntryPoint(new AuthEntryPoint());
+        http.exceptionHandling().authenticationEntryPoint(new AuthEntryPoint());
         http.headers().frameOptions().disable();
+
         http.authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, "/api/1.0/auth")
-                .authenticated()
                 .requestMatchers(HttpMethod.PUT, "/api/1.0/users/{username}")
                 .authenticated()
                 .requestMatchers(HttpMethod.POST, "/api/1.0/hoaxes")
