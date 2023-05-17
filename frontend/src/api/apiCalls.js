@@ -5,7 +5,7 @@ export const enumDomainName = {
     hoaxes: 'hoaxes'
 
 }
-const baseUrl = '/api/1.0/'
+const baseUrl = '/api/1.0/';
 export const signup = body => {
     const url = baseUrl + enumDomainName.users;
     return axios.post(url, body);
@@ -76,4 +76,8 @@ export const postHoaxAttachment = attachment => {
 
 export const deleteHoax = id => {
     return axios.delete(`${baseUrl}${enumDomainName.hoaxes}/${id}`);
+}
+
+export const deleteUser = username => {
+    return axios.delete(`${baseUrl}${enumDomainName.users}/${username}`);
 }

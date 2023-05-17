@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { ProfileImageWithDefault } from './ProfileImageWithDefault';
 import { useTranslation } from 'react-i18next';
 import Input from './Input';
-import { updateUser } from '../api/apiCalls';
+import { deleteUser, updateUser } from '../api/apiCalls';
 import ButtonWithProgress from './ButtonWithProgress';
 import { useApiProgress } from '../shared/ApiProgress';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateSuccess } from '../redux/authActions';
+import { logoutSuccess, updateSuccess } from '../redux/authActions';
+import Modal from './Modal';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom';
 const ProfileCard = props => {
     const [inEditMode, setInEditMode] = useState(false);
     const [updatedDisplayName, setUpdatedDisplayName] = useState();
@@ -17,8 +19,10 @@ const ProfileCard = props => {
     const [user, setUser] = useState({});
     const [editable, setEditable] = useState(false);
     const [newImage, setNewImage] = useState();
+    const [modalVisible, setModalVisible] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
     const dispatch = useDispatch();
+    const history = useHistory();
 
     useEffect(() => {
         setUser(props.user);
@@ -92,6 +96,24 @@ const ProfileCard = props => {
         fileReader.readAsDataURL(file);
     }
 
+    const onClickCancel = () => {
+        setModalVisible(false);
+    }
+
+    const onClickDeleteUser = async () => {
+        try{
+            const respoense = await deleteUser(username);
+            setModalVisible(false);
+            dispatch(logoutSuccess());
+            history.push('/');
+
+
+        }catch(error){
+
+        }
+    }
+
+    const pendingApiCallDeleteUser = useApiProgress('delete', `/api/1.0/users/${username}`);
     const pendingApiCall = useApiProgress('put', `/api/1.0/users/${username}`);
     const { displayName: displayNameError, image: imageError } = validationErrors;
     const editMode = (
@@ -133,10 +155,22 @@ const ProfileCard = props => {
         <h3>
             {displayName}@{username}
         </h3>
-        {editable && (<button className='btn btn-success d-inline-flex' onClick={() => setInEditMode(true)}>
+        {editable && (
+    <>
+        <button className='btn btn-success d-inline-flex' onClick={() => setInEditMode(true)}>
             <span className="material-symbols-outlined">edit</span>
             {t('Edit')}
-        </button>)}
+        </button>
+        <div className='pt-2'>
+        <button className='btn btn-danger d-inline-flex' onClick={() => setModalVisible(true)}>
+                <span className="material-symbols-outlined">
+        directions_run
+        </span>
+            {t('Delete My Account')}
+        </button>
+        </div>
+      </>
+        )}
     </div>);
 
     return (
@@ -157,6 +191,15 @@ const ProfileCard = props => {
                     editMode
                 }
             </div>
+        <Modal 
+        visible={modalVisible}
+        onClickCancel={onClickCancel}
+        onClickOk={onClickDeleteUser}
+        message={<strong>{t("Are you sure to delete your account?")}</strong>}
+        pendingApiCall={pendingApiCallDeleteUser}
+        title={t("Delete Account")}
+        okButtonText={t("Delete Account")}
+         />
         </div >
     );
 };
