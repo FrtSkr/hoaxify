@@ -1,10 +1,19 @@
 import * as ACTIONS from './Constants';
-import { login, signup } from '../api/apiCalls';
+import { login, logout, signup } from '../api/apiCalls';
+
+
 
 export const logoutSuccess = () => {
-    return {
-        type: ACTIONS.LOGOUT_SUCCES
-    };
+    return async function(dispatch){
+        try{
+            await logout();
+        }catch(err){
+
+        }
+        dispatch({
+            type: ACTIONS.LOGOUT_SUCCES
+        })
+    }
 };
 
 export const loginSuccess = (authState) => {
