@@ -23,18 +23,23 @@ public class WebServiceApplication {
 	@Profile("dev")
 	CommandLineRunner createInitialUsers(UserService userService, HoaxService hoaxService){
 		return (args) -> {
-			for(int i = 1; i <=10; i++){
-				User user = new User();
-				user.setUsername("user"+i);
-				user.setDisplayName("display"+i);
-				user.setPassword("User1234");
-				userService.save(user);
-				for (int j=0; j<20; j++){
-					HoaxSubmitVM hoaxSubmitVM = new HoaxSubmitVM();
-					hoaxSubmitVM.setContent("hoax ("+ j + ") from user ("+ i + ")");
-					hoaxService.save(hoaxSubmitVM, user);
+			try{
+				userService.getByUsername("user10");
+			}catch (Exception e){
+				for(int i = 1; i <=10; i++){
+					User user = new User();
+					user.setUsername("user"+i);
+					user.setDisplayName("display"+i);
+					user.setPassword("User1234");
+					userService.save(user);
+					for (int j=0; j<20; j++){
+						HoaxSubmitVM hoaxSubmitVM = new HoaxSubmitVM();
+						hoaxSubmitVM.setContent("hoax ("+ j + ") from user ("+ i + ")");
+						hoaxService.save(hoaxSubmitVM, user);
+					}
 				}
 			}
+
 		};
 	}
 
