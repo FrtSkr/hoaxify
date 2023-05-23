@@ -81,3 +81,7 @@ export const deleteHoax = id => {
 export const deleteUser = username => {
     return axios.delete(`${baseUrl}${enumDomainName.users}/${username}`);
 }
+
+export const logout = () => {
+    return axios.post(`${baseUrl}logout`);
+}
