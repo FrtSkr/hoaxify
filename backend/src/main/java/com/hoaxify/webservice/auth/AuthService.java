@@ -2,12 +2,14 @@ package com.hoaxify.webservice.auth;
 
 import com.hoaxify.webservice.user.User;
 import com.hoaxify.webservice.user.UserRepository;
-import com.hoaxify.webservice.user.UserService;
 import com.hoaxify.webservice.user.vm.UserVM;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.transaction.Transactional;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AuthService {
@@ -15,9 +17,12 @@ public class AuthService {
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder){
+    TokenRepository tokenRepository;
+
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, TokenRepository tokenRepository){
          this.userRepository = userRepository;
          this.passwordEncoder = passwordEncoder;
+         this.tokenRepository = tokenRepository;
      }
 
     public AuthResponse authenticate(Credentials credentials) {
@@ -26,7 +31,14 @@ public class AuthService {
             boolean matches = passwordEncoder.matches(credentials.getPassword(), inDB.getPassword());
             if(matches){
                 UserVM userVM = new UserVM(inDB);
-                String token = Jwts.builder().setSubject(""+ inDB.getId()).signWith(SignatureAlgorithm.HS512, "my-app-secret").compact();
+
+                String token = generateRandomToken();
+
+                Token tokenEntity = new Token();
+                tokenEntity.setToken(token);
+                tokenEntity.setUser(inDB);
+                tokenRepository.save(tokenEntity);
+
                 AuthResponse response = new AuthResponse();
                 response.setUser(userVM);
                 response.setToken(token);
@@ -38,5 +50,19 @@ public class AuthService {
         }else {
             throw new AuthException();
         }
+    }
+
+    @Transactional
+    public UserDetails getUserDetails(String token) {
+
+        Optional<Token> optionalToken = tokenRepository.findById(token);
+        if (!optionalToken.isPresent()){
+            return null;
+        }
+        return optionalToken.get().getUser();
+    }
+
+    private String generateRandomToken(){
+        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 }
