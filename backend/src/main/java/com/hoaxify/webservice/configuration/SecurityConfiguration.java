@@ -1,4 +1,5 @@
 package com.hoaxify.webservice.configuration;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
@@ -40,6 +42,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests().anyRequest().permitAll();
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(tokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -47,6 +50,11 @@ public class SecurityConfiguration {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    TokenFilter tokenFilter(){
+        return new TokenFilter();
     }
 
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
