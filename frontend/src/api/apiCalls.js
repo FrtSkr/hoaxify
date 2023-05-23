@@ -13,7 +13,7 @@ export const signup = body => {
 
 export const login = creds => {
     const url = baseUrl + enumDomainName.auth;
-    return axios.post(url, {}, { auth: creds });
+    return axios.post(url, creds);
 }
 
 export const changeLanguage = language => {
@@ -25,9 +25,9 @@ export const getUsers = (page = 0, size = 3) => {
     return axios.get(baseUrl + `${enumDomainName.users}?page=${page}&size=${size}`);
 }
 
-export const setAuthorizationHeader = ({ username, password, isLoggedIn }) => {
+export const setAuthorizationHeader = ({ isLoggedIn, token }) => {
     if (isLoggedIn) {
-        axios.defaults.headers['Authorization'] = `Basic ${btoa(username + ":" + password)}`;
+        axios.defaults.headers['Authorization'] = `Bearer ${token}`;
 
     } else {
         delete axios.defaults.headers['Authorization'];

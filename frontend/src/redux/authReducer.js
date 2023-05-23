@@ -15,13 +15,14 @@ const authReducer = (state = { ...defaultState }, action) => {
         return defaultState;
     }
     else if (action.type === ACTIONS.LOGIN_SUCCES) {
-        const { isLoggedIn, username, displayName, image, password } = action.payload;
+        const { isLoggedIn, username, displayName, image, password, token } = action.payload;
         state = {
             isLoggedIn: isLoggedIn,
             username: username,
             displayName: displayName,
             image: image,
-            password: password
+            password: password,
+            token: token
 
         }
         return state;
