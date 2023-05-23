@@ -1,5 +1,6 @@
 package com.hoaxify.webservice.user;
 
+import com.hoaxify.webservice.auth.Token;
 import com.hoaxify.webservice.hoax.Hoax;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -41,6 +42,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Hoax> hoaxes;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Token> tokens;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
